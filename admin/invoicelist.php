@@ -755,9 +755,7 @@
 	<script src="js/jquery.smartmenus.js"></script>
 	<script src="js/menus.js"></script>
 	<script src="js/template.js"></script>
-
 	<script src="js/pages/data-table.js"></script>
-
 
 </body>
 

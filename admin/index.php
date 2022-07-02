@@ -119,7 +119,7 @@
 								<div class="box-body p-0">
 									<div class="px-30 pt-20">
 										<h2 class="text-white mb-0">34,042 </h2>
-										<p class="text-white-50">Patients this month</p>
+										<p class="text-white-50">Customers this month</p>
 									</div>
 									<div id="statisticschart3"></div>
 								</div>
