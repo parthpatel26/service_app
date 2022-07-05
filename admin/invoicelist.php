@@ -746,16 +746,16 @@
 
 
 	<!-- Vendor JS -->
-	<script src="js/vendors.min.js"></script>
-	<script src="js/pages/chat-popup.js"></script>
+	<script src="../js/vendors.min.js"></script>
+	<script src="../js/pages/chat-popup.js"></script>
 	<script src="../assets/icons/feather-icons/feather.min.js"></script>
 	<script src="../assets/vendor_components/datatable/datatables.min.js"></script>
 
 	<!-- Florence Admin App -->
-	<script src="js/jquery.smartmenus.js"></script>
-	<script src="js/menus.js"></script>
-	<script src="js/template.js"></script>
-	<script src="js/pages/data-table.js"></script>
+	<script src="../js/jquery.smartmenus.js"></script>
+	<script src="../js/menus.js"></script>
+	<script src="../js/template.js"></script>
+	<script src="../js/pages/data-table.js"></script>
 
 </body>
 

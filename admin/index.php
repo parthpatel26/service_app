@@ -11,6 +11,7 @@
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<div class="container-full">
+				<?= TIME ?>
 				<!-- Main content -->
 				<section class="content">
 					<div class="row">
@@ -122,45 +123,6 @@
 										<p class="text-white-50">Customers this month</p>
 									</div>
 									<div id="statisticschart3"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-12">
-							<div class="box">
-								<div class="box-header">
-									<h4 class="box-title">Stock Market</h4>
-								</div>
-								<div class="box-body">
-									<div class="d-flex justify-content-between align-items-center mb-15">
-										<div>
-											<h3 class="mb-0 text-primary">XU200</h3>
-											<p class="mb-0">08 November 2020</p>
-										</div>
-										<div class="max-w-150">
-											<div id="chart-spark1"></div>
-											<p class="mb-0 d-flex justify-content-between w-100p fs-16 fw-600">120.450 <span class="text-danger">-15%</span></p>
-										</div>
-									</div>
-									<div class="d-flex justify-content-between align-items-center mb-15">
-										<div>
-											<h3 class="mb-0 text-primary">Jake Weary</h3>
-											<p class="mb-0">08 November 2020</p>
-										</div>
-										<div class="max-w-150">
-											<div id="chart-spark2"></div>
-											<p class="mb-0 d-flex justify-content-between w-100p fs-16 fw-600">142.415 <span class="text-danger">-19%</span></p>
-										</div>
-									</div>
-									<div class="d-flex justify-content-between align-items-center mb-15">
-										<div>
-											<h3 class="mb-0 text-primary">Globel IPC</h3>
-											<p class="mb-0">08 November 2020</p>
-										</div>
-										<div class="max-w-150">
-											<div id="chart-spark3"></div>
-											<p class="mb-0 d-flex justify-content-between w-100p fs-16 fw-600">215.450 <span class="text-success">+11%</span></p>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>

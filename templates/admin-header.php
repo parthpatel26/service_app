@@ -1,4 +1,3 @@
-<script src="js/jquery.js"></script>
 <header class="main-header">
     <div class="inside-header">
         <div class="d-flex align-items-center logo-box justify-content-start">
@@ -168,6 +167,7 @@
         <li><a href="invoicelist.php"><i class=" ti-clipboard"></i>Invoice List</a></li>
         <li><a href="extra_app_ticket.php"><i class="ti-write"></i>Support Ticket</a></li>
         <li><a href="mailbox.php"><i class="ti-email"></i>Mailbox</a></li>
+        <li><a href="add_user.php"><i class="ti-user"></i>Add User</a></li>
     </ul>
 </nav>
 <script>
