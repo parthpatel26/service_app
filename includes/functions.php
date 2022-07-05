@@ -32,7 +32,7 @@ function FindRoot()
 
   $times = substr_count($_SERVER['PHP_SELF'], "/");
   $rootaccess = "";
-  $i = 3;    //if you're working on local computer set it 2, if its on live server set this value to 1
+  $i = 2;    //if you're working on local computer set it 2, if its on live server set this value to 1
   while ($i < $times) {
     $rootaccess .= "../";
     $i++;
@@ -136,4 +136,9 @@ function logout()
   unset($_SESSION['userId']);
   unset($_SESSION['role']);
   redirectTo('index.php');
+}
+
+function lastId($connect)
+{
+  return intval(mysqli_insert_id($connect));
 }

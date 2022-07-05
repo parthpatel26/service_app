@@ -20,8 +20,8 @@
 								<nav>
 									<ol class="breadcrumb">
 										<li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-										<li class="breadcrumb-item" aria-current="page">Sample Page</li>
-										<li class="breadcrumb-item active" aria-current="page">Blank page</li>
+										<li class="breadcrumb-item" aria-current="page">User Management</li>
+										<li class="breadcrumb-item active" aria-current="page">Add User</li>
 									</ol>
 								</nav>
 							</div>
@@ -35,12 +35,15 @@
 					<div class="row">
 						<div class="col-lg-12 col-12">
 							<div class="box">
-
 								<!-- /.box-header -->
-								<form class="form">
-									<div class="box-body">
-										<h4 class="box-title text-info mb-0"><i class="ti-user me-15"></i> Personal Info</h4>
-										<hr class="my-15">
+								<div class="box-body">
+									<h4 class="box-title text-info mb-0"><i class="ti-user me-15"></i> User Info</h4>
+									<hr class="my-15">
+									<div class="msg"></div>
+
+									<form class="form" name="add_user">
+										<input type="hidden" name="form_name" value="add_user">
+
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
@@ -74,8 +77,8 @@
 												<div class="form-group">
 													<label class="form-label">Role</label>
 													<select class="form-select" name="role">
-														<option value="3">Client</option>
-														<option value="2">Customer</option>
+														<option value="2">Client</option>
+														<option value="3">Customer</option>
 														<option value="1">Admin</option>
 													</select>
 												</div>
@@ -84,14 +87,15 @@
 
 										<!-- /.box-body -->
 										<div class="box-footer">
-											<button type="button" class="btn btn-warning me-1">
+											<button type="button" name="cancel" class="btn btn-warning me-1">
 												<i class="ti-trash"></i> Cancel
 											</button>
-											<button type="submit" class="btn btn-primary">
+											<button type="submit" name="save" class="btn btn-primary">
 												<i class="ti-save-alt"></i> Save
 											</button>
 										</div>
-								</form>
+									</form>
+								</div>
 							</div>
 							<!-- /.box -->
 						</div>
@@ -119,7 +123,6 @@
 	<!-- Vendor JS -->
 	<script src="../js/vendors.min.js"></script>
 	<script src="../js/pages/chat-popup.js"></script>
-	<script src="../assets/icons/feather-icons/feather.min.js"></script>
 
 	<!-- Florence Admin App -->
 	<script src="../js/jquery.smartmenus.js"></script>
@@ -130,6 +133,42 @@
 
 </body>
 
-<!-- Mirrored from florence-admin-template.multipurposethemes.com/bs5/main-horizontal/sample_blank.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 30 Jun 2022 08:06:18 GMT -->
+<script>
+	$(document).ready(function() {
+
+		$("form[name=add_user]").on("submit", function(ev) {
+			ev.preventDefault();
+			var formData = new FormData(this);
+			$.ajax({
+				url: '<?= ROOT ?>action/manage_user.php',
+				type: "POST",
+				data: formData,
+				success: function(data) {
+					const result = JSON.parse(data);
+					console.log(result);
+					var msgbox = '<div class="alert" role="alert" id="msg-box">' + '</div>';
+					if (result.error === 0) {
+						$(".msg").html(msgbox);
+						$('#msg-box').addClass("alert-success")
+						$('#msg-box').html(result.msg);
+					} else {
+						$(".msg").html(msgbox);
+						$('#msg-box').addClass("alert-danger")
+						$('#msg-box').html(result.msg);
+					}
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+		});
+
+		$("form[name=add_user] button[name=cancel]").click(function() {
+			$("form[name=add_user]").trigger("reset");
+		})
+
+
+	});
+</script>
 
 </html>

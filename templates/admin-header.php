@@ -167,7 +167,12 @@
         <li><a href="invoicelist.php"><i class=" ti-clipboard"></i>Invoice List</a></li>
         <li><a href="extra_app_ticket.php"><i class="ti-write"></i>Support Ticket</a></li>
         <li><a href="mailbox.php"><i class="ti-email"></i>Mailbox</a></li>
-        <li><a href="add_user.php"><i class="ti-user"></i>Add User</a></li>
+        <li><a href="user_management.php"><i class="ti-user"></i>User Management</a>
+            <ul>
+                <li><a href="add_user.php"><i class="ti-more"></i>Add User</a></li>
+
+            </ul>
+        </li>
     </ul>
 </nav>
 <script>

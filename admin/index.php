@@ -1,4 +1,5 @@
-﻿<?php include '../templates/header.php' ?>
+﻿<?php include '../templates/header.php';
+?>
 
 <body class="layout-top-nav light-skin theme-primary fixed">
 
@@ -11,7 +12,6 @@
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<div class="container-full">
-				<?= TIME ?>
 				<!-- Main content -->
 				<section class="content">
 					<div class="row">

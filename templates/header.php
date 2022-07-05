@@ -1,6 +1,7 @@
 <?php
+session_start();
 $times = substr_count($_SERVER['PHP_SELF'], "/");
-if ($times <= 3) {
+if ($times <= 2) {
     include('includes/constant.php');
 } else {
     include('../includes/constant.php');

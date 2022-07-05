@@ -8,5 +8,3 @@ if ($connect->connect_error) {
     die("Connection failed: " . $connect->connect_error);
 }
 session_start();
-// include '../includes/functions.php';
-// include '../includes/constant.php';

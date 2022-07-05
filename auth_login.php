@@ -13,7 +13,11 @@
 								<h2 class="text-primary">Let's Get Started</h2>
 								<p class="mb-0">Sign in to Tricore IT Services.</p>
 							</div>
+
 							<div class="p-40">
+								<div class="alert alert-danger" role="alert" id="error-div">
+
+								</div>
 								<form id="login" enctype="multipart/form-data" name="login">
 									<div class="form-group">
 										<div class="input-group mb-3">
@@ -56,7 +60,11 @@
 										</div>
 										<!-- /.col -->
 										<div class="col-12 text-center">
-											<button type="submit" name='login' class="btn btn-danger mt-10">SIGN IN</button>
+											<!-- <button type="submit" name='login' class="btn btn-danger mt-10">SIGN IN</button> -->
+											<input type="submit" name='role_name' class="btn btn-primary mt-10" value="admin">
+											<input type="submit" name='role_name' class="btn btn-primary mt-10" value="client">
+											<input type="submit" name='role_name' class="btn btn-primary mt-10" value="customer">
+											<input type="hidden" value="" name="role">
 										</div>
 										<!-- /.col -->
 									</div>
@@ -83,18 +91,38 @@
 <script>
 	$(document).ready(function() {
 
+		$('input[name=role_name]').click(function() {
+			var role = $(this).val();
+			$('input[name=role]').val(role);
+			console.log($('input[name=role]').val());
+		})
+
+		$('#error-div').hide();
+
 		$("#login").on("submit", function(ev) {
 			ev.preventDefault();
-			// var formData = $(this).serialize();
 			var formData = new FormData(this);
-			console.log(formData);
 			$.ajax({
 				url: 'action/login.php',
 				type: "POST",
 				data: formData,
 				success: function(data) {
 					const result = JSON.parse(data);
-					console.log(result.msg);
+					console.log(result);
+					if (result.error === 0) {
+						if (result.role == 1) {
+							window.location.replace('/services_app/admin/index.php');
+						}
+						if (result.role == 2) {
+							window.location.replace('/services_app/admin/index.php');
+						}
+						if (result.role == 3) {
+							window.location.replace('/services_app/index.php');
+						}
+					} else {
+						$('#error-div').html(result.msg);
+						$('#error-div').show();
+					}
 				},
 				cache: false,
 				contentType: false,
@@ -102,32 +130,6 @@
 			});
 		});
 
-		// $("form[name='login']").on("submit", function(ev) {
-		// 	ev.preventDefault(); // Prevent browser default submit.
-		// 	var formData = new FormData(this);
-		// 	$.ajax({
-		// 		url: "action/login.php",
-		// 		type: "POST",
-		// 		data: formData,
-		// 		success: function(msg) {
-		// 			console.log(msg);
-		// 			var data = JSON.parse(msg);
-		// 			// var error
-		// 			if (data.error == 0) {
-		// 				$('.products').prepend('<center><div id ="wrapper">' +
-		// 					'<div class="loader">' +
-		// 					' </div> </div></div></center>')
-		// 				// $("form[name='insert']").trigger("reset");
-
-		// 			}
-
-		// 		},
-		// 		cache: false,
-		// 		contentType: false,
-		// 		processData: false
-		// 	});
-
-		// });
 
 	});
 </script>
