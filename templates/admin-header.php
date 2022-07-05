@@ -1,12 +1,11 @@
-<script src="js/jquery.js"></script>
 <header class="main-header">
     <div class="inside-header">
         <div class="d-flex align-items-center logo-box justify-content-start">
             <!-- Logo -->
-            <a href="index.html" class="logo">
+            <a href="index.php" class="logo">
                 <!-- logo-->
                 <div class="logo-lg">
-                    <span class="light-logo"><img src="../images/logo-dark-text.png" alt="logo"></span>
+                    <span class="light-logo"><img src="../images/logo-dark-text.png" width='60%' alt="logo"></span>
                     <span class="dark-logo"><img src="../images/logo-light-text.png" alt="logo"></span>
                 </div>
             </a>
@@ -17,22 +16,22 @@
             <div class="app-menu">
                 <ul class="header-megamenu nav">
                     <li class="btn-group nav-item d-none d-xl-inline-block">
-                        <a href="contact_app_chat.html" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
+                        <a href="javascript:void(0)" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
                             <i class="ti-comments"></i>
                         </a>
                     </li>
                     <li class="btn-group nav-item d-none d-xl-inline-block">
-                        <a href="mailbox.html" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
+                        <a href="javascript:void(0)" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
                             <i class="ti-email"></i>
                         </a>
                     </li>
                     <li class="btn-group nav-item d-none d-xl-inline-block">
-                        <a href="extra_taskboard.html" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
+                        <a href="javascript:void(0)" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
                             <i class="ti-check-box"></i>
                         </a>
                     </li>
                     <li class="btn-group nav-item d-none d-xl-inline-block">
-                        <a href="extra_calendar.html" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
+                        <a href="javascript:void(0)" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="">
                             <i class="ti-calendar"></i>
                         </a>
                     </li>
@@ -168,6 +167,12 @@
         <li><a href="invoicelist.php"><i class=" ti-clipboard"></i>Invoice List</a></li>
         <li><a href="extra_app_ticket.php"><i class="ti-write"></i>Support Ticket</a></li>
         <li><a href="mailbox.php"><i class="ti-email"></i>Mailbox</a></li>
+        <li><a href="user_management.php"><i class="ti-user"></i>User Management</a>
+            <ul>
+                <li><a href="add_user.php"><i class="ti-more"></i>Add User</a></li>
+
+            </ul>
+        </li>
     </ul>
 </nav>
 <script>
