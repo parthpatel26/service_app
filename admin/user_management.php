@@ -42,7 +42,7 @@
                                 <div class="box-body">
                                     <div class="table-responsive">
 
-                                        <table id="example" class="table table-lg invoice-archive" width='100%'>
+                                        <table id="example" class="table table-lg" width='100%'>
                                             <thead>
                                                 <tr>
                                                     <th>User Id</th>
@@ -188,6 +188,7 @@
             success: function(data) {
                 const result = JSON.parse(data);
                 console.log(result);
+
                 $('#total_admin').html(result.admin);
                 $('#total_client').html(result.client);
                 $('#total_customer').html(result.customer);
@@ -200,7 +201,8 @@
 
         $('#example').DataTable({
             pageLength: 20,
-
+            pagelengthChange: true,
+            paging: true,
             ajax: {
                 type: "POST",
                 url: "../action/load_users.php",
@@ -210,10 +212,7 @@
                 dataSrc: 'users',
 
             },
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
+
             columns: [{
                     data: "id"
                 },
@@ -256,7 +255,6 @@
         });
         $(document).on("click", "#remove_user", function() {
             var id = $(this).data("id");
-            alert(id);
             swal({
                 title: "Are you sure?",
                 text: "You want to delete this user?",
