@@ -36,13 +36,13 @@
                         <div class="col-xl-10 col-lg-9 col-12">
                             <div class="box">
                                 <div class="box-header with-border">
-                                    <h4 class="box-title">Invoice List</h4>
-                                    <h6 class="box-subtitle">Export Invoice List to Copy, CSV, Excel, PDF & Print</h6>
+                                    <h4 class="box-title">User List</h4>
+                                    <h6 class="box-subtitle">Export User List to Copy, CSV, Excel, PDF & Print</h6>
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
 
-                                        <table id="example" class="table table-lg invoice-archive">
+                                        <table id="example" class="table table-lg invoice-archive" width='100%'>
                                             <thead>
                                                 <tr>
                                                     <th>User Id</th>
@@ -55,9 +55,6 @@
                                                     <th class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
 
                                         </table>
 
@@ -66,10 +63,10 @@
                             </div>
                         </div>
                         <div class="col-xl-2 col-lg-3 col-12">
-                            <div class="box box-inverse box-success">
+                            <div class="box box-inverse box-success pull-up">
                                 <div class="box-body">
                                     <div class="flexbox">
-                                        <h5>Invoice</h5>
+                                        <h5>Users</h5>
                                         <div class="dropdown">
                                             <span class="dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="ion-android-more-vertical rotate-90"></i></span>
                                             <div class="dropdown-menu dropdown-menu-end">
@@ -81,15 +78,15 @@
                                     </div>
 
                                     <div class="text-center my-2">
-                                        <div class="fs-60">2,064</div>
-                                        <span>Total Invoice</span>
+                                        <div class="fs-60" name="stats" id="total_users"></div>
+                                        <span>Total Users</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="box box-inverse box-primary">
+                            <div class="box box-inverse box-primary pull-up">
                                 <div class="box-body">
                                     <div class="flexbox">
-                                        <h5>Re Generate Invoice</h5>
+                                        <h5>Customers</h5>
                                         <div class="dropdown">
                                             <span class="dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="ion-android-more-vertical rotate-90"></i></span>
                                             <div class="dropdown-menu dropdown-menu-end">
@@ -101,15 +98,15 @@
                                     </div>
 
                                     <div class="text-center my-2">
-                                        <div class="fs-60">1,738</div>
-                                        <span>Re Generate Invoice</span>
+                                        <div class="fs-60" name="stats" id="total_customer"></div>
+                                        <span>Total Customers</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="box box-inverse box-danger">
+                            <div class="box box-inverse box-danger pull-up">
                                 <div class="box-body">
                                     <div class="flexbox">
-                                        <h5>Overdue Payment Invoice</h5>
+                                        <h5>Clients</h5>
                                         <div class="dropdown">
                                             <span class="dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="ion-android-more-vertical rotate-90"></i></span>
                                             <div class="dropdown-menu dropdown-menu-end">
@@ -121,16 +118,16 @@
                                     </div>
 
                                     <div class="text-center my-2">
-                                        <div class="fs-60">1100</div>
-                                        <span>Overdue Payment Invoice</span>
+                                        <div class="fs-60" name="stats" id="total_client"></div>
+                                        <span>Total Clients</span>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="box box-inverse box-warning">
+                            <div class="box box-inverse box-warning pull-up">
                                 <div class="box-body">
                                     <div class="flexbox">
-                                        <h5>Pending Invoice</h5>
+                                        <h5>Admins</h5>
                                         <div class="dropdown">
                                             <span class="dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="ion-android-more-vertical rotate-90"></i></span>
                                             <div class="dropdown-menu dropdown-menu-end">
@@ -142,8 +139,8 @@
                                     </div>
 
                                     <div class="text-center my-2">
-                                        <div class="fs-60">964</div>
-                                        <span>Pending</span>
+                                        <div class="fs-60" name="stats" id="total_admin"></div>
+                                        <span>Total Admins</span>
                                     </div>
                                 </div>
                             </div>
@@ -168,12 +165,14 @@
     <script src="../js/pages/chat-popup.js"></script>
     <script src="../assets/icons/feather-icons/feather.min.js"></script>
     <script src="../assets/vendor_components/datatable/datatables.min.js"></script>
+    <script src="../assets/vendor_components/sweetalert/sweetalert.min.js"></script>
+
+
 
     <!-- Florence Admin App -->
     <script src="../js/jquery.smartmenus.js"></script>
     <script src="../js/menus.js"></script>
     <script src="../js/template.js"></script>
-    <script src="../js/pages/data-table.js"></script>
 
 </body>
 
@@ -181,31 +180,141 @@
 <script>
     $(document).ready(function() {
         $.ajax({
-            url: '<?= ROOT ?>action/load_users.php',
+            url: '../action/load_users.php',
             type: "POST",
+            data: {
+                action: 'count_user'
+            },
             success: function(data) {
-                console.log(data);
-
                 const result = JSON.parse(data);
                 console.log(result);
-                $.each(result, function(key, user) {
-                    var row = "";
-                    row += "<tr>";
-                    row += "<td>" + user.id + "</td>";
-                    row += "<td>" + user.email + "</td>";
-                    row += "<td>" + user.password + "</td>";
-                    row += "<td>" + user.pan + "</td>";
-                    row += "<td>" + user.adhar + "</td>";
-                    row += "<td>" + user.status + "</td>";
-                    row += "<td>" + user.created + "</td>";
-                    row += "</tr>";
-                    $('tbody').append(row);
-                });
+                $('#total_admin').html(result.admin);
+                $('#total_client').html(result.client);
+                $('#total_customer').html(result.customer);
+                $('#total_users').html(result.total);
             },
-            cache: false,
-            contentType: false,
-            processData: false
+
         });
+
+
+
+        $('#example').DataTable({
+            pageLength: 20,
+
+            ajax: {
+                type: "POST",
+                url: "../action/load_users.php",
+                data: {
+                    action: 'load_users'
+                },
+                dataSrc: 'users',
+
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            columns: [{
+                    data: "id"
+                },
+                {
+                    data: "email"
+                },
+                {
+                    data: "password"
+                },
+                {
+                    data: "pan"
+                },
+                {
+                    data: "adhar"
+                },
+                {
+                    data: "status"
+                },
+                {
+                    data: "created"
+                },
+                {
+                    targets: 0,
+                    data: 'id',
+                    render: function(data, type, row, meta) {
+                        return '<div class="list-icons d-inline-flex ">' +
+                            '<a href="#" data-id=' + data + ' class="list-icons-item me-10"><i class="fa fa-eye-slash"></i></a>' +
+                            '<div class="list-icons-item dropdown">' +
+                            '<a href="#" class="list-icons-item dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-file-text"></i></a>' +
+                            '<div class="dropdown-menu dropdown-menu-end">' +
+                            '<a href="#" data-id=' + data + ' id="" class="dropdown-item"><i class="fa fa-pencil"></i> Edit</a>' +
+                            '<a href="#" data-id=' + data + ' id="remove_user" class="dropdown-item"><i class="fa fa-remove"></i> Remove</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+
+                    }
+                }
+            ],
+        });
+        $(document).on("click", "#remove_user", function() {
+            var id = $(this).data("id");
+            alert(id);
+            swal({
+                title: "Are you sure?",
+                text: "You want to delete this user?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel it!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    swal({
+                        title: "You can also block the user",
+                        text: "Only user will not be able to access profile but the records will be safe",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "DELETE!",
+                        cancelButtonText: "Block",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    }, function(isConfirm) {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: '../action/load_users.php',
+                                type: "POST",
+                                data: {
+                                    action: 'delete_user',
+                                    id: id
+                                },
+                                success: function(data) {
+                                    const result = JSON.parse(data);
+                                    $("a[data-id=" + id + "]").closest("tr").hide();
+                                },
+                            });
+                            swal("Deleted!", "User has been deleted.", "success");
+
+                            // tr.remove();
+                        } else {
+                            $.ajax({
+                                url: '../action/load_users.php',
+                                type: "POST",
+                                data: {
+                                    action: 'delete_user',
+                                    id: id
+                                },
+                                success: function(data) {
+                                    const result = JSON.parse(data);
+                                    console.log(result);
+                                },
+                            });
+                            swal("Blocked!", "User has been blocked.", "success");
+                        }
+                    });
+                }
+            });
+        })
     });
 </script>
 
