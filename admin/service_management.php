@@ -42,18 +42,17 @@
                                 <div class="box-body">
                                     <div class="table-responsive">
 
-                                        <table id="example" class="table table-lg" width='100%'>
+                                        <table id="user_service" class="table table-lg" width='100%'>
                                             <thead>
                                                 <tr>
-                                                    <th>User Id</th>
-                                                    <th>Email</th>
-                                                    <th>Password</th>
-                                                    <th>Role</th>
-                                                    <th>Pancard</th>
-                                                    <th>Adharcard</th>
+                                                    <th>Service ID</th>
+                                                    <th>Service</th>
+                                                    <th>Year</th>
+                                                    <th>Price</th>
+                                                    <th>Payment</th>
                                                     <th>Status</th>
-                                                    <th>Added On</th>
-                                                    <th class="text-center">Actions</th>
+                                                    <th>Assigned To</th>
+                                                    <!-- <th class="text-center">Actions</th> -->
                                                 </tr>
                                             </thead>
 
@@ -180,143 +179,12 @@
 
 <script>
     $(document).ready(function() {
-        $.ajax({
-            url: '../action/load_users.php',
-            type: "POST",
-            data: {
-                action: 'count_user'
-            },
-            success: function(data) {
-                const result = JSON.parse(data);
-                console.log(result);
-
-                $('#total_admin').html(result.admin);
-                $('#total_client').html(result.client);
-                $('#total_customer').html(result.customer);
-                $('#total_users').html(result.total);
-            },
-
+        $('#user_service').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '<?= ROOT ?>action/services.php',
         });
-
-
-
-        $('#example').DataTable({
-            pageLength: 20,
-            pagelengthChange: true,
-            paging: true,
-            ajax: {
-                type: "POST",
-                url: "../action/load_users.php",
-                data: {
-                    action: 'load_users'
-                },
-                dataSrc: 'users',
-
-            },
-
-            columns: [{
-                    data: "id"
-                },
-                {
-                    data: "email"
-                },
-                {
-                    data: "password"
-                },
-                {
-                    data: "role"
-                },
-                {
-                    data: "pan"
-                },
-                {
-                    data: "adhar"
-                },
-                {
-                    data: "status"
-                },
-                {
-                    data: "created"
-                },
-                {
-                    targets: 0,
-                    data: 'id',
-                    render: function(data, type, row, meta) {
-                        return '<div class="list-icons d-inline-flex ">' +
-                            '<a href="#" data-id=' + data + ' class="list-icons-item me-10"><i class="fa fa-eye-slash"></i></a>' +
-                            '<div class="list-icons-item dropdown">' +
-                            '<a href="#" class="list-icons-item dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-file-text"></i></a>' +
-                            '<div class="dropdown-menu dropdown-menu-end">' +
-                            '<a href="#" data-id=' + data + ' id="" class="dropdown-item"><i class="fa fa-pencil"></i> Edit</a>' +
-                            '<a href="#" data-id=' + data + ' id="remove_user" class="dropdown-item"><i class="fa fa-remove"></i> Remove</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>'
-
-                    }
-                }
-            ],
-        });
-        $(document).on("click", "#remove_user", function() {
-            var id = $(this).data("id");
-            swal({
-                title: "Are you sure?",
-                text: "You want to delete this user?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel it!",
-                closeOnConfirm: false,
-                closeOnCancel: true
-            }, function(isConfirm) {
-                if (isConfirm) {
-                    swal({
-                        title: "You can also block the user",
-                        text: "Only user will not be able to access profile but the records will be safe",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "DELETE!",
-                        cancelButtonText: "Block",
-                        closeOnConfirm: false,
-                        closeOnCancel: false
-                    }, function(isConfirm) {
-                        if (isConfirm) {
-                            $.ajax({
-                                url: '../action/load_users.php',
-                                type: "POST",
-                                data: {
-                                    action: 'delete_user',
-                                    id: id
-                                },
-                                success: function(data) {
-                                    const result = JSON.parse(data);
-                                    $("a[data-id=" + id + "]").closest("tr").hide();
-                                },
-                            });
-                            swal("Deleted!", "User has been deleted.", "success");
-
-                        } else {
-                            $.ajax({
-                                url: '../action/load_users.php',
-                                type: "POST",
-                                data: {
-                                    action: 'delete_user',
-                                    id: id
-                                },
-                                success: function(data) {
-                                    const result = JSON.parse(data);
-                                    console.log(result);
-                                },
-                            });
-                            swal("Blocked!", "User has been blocked.", "success");
-                        }
-                    });
-                }
-            });
-        })
-    });
+    })
 </script>
 
 </html>

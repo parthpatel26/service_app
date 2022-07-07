@@ -16,6 +16,7 @@ if (isset($_POST['action'])) {
             $id = $row['user_id'];
             $email = $row['email'];
             $password = $row['password'];
+            $role = $row['role'];
             $pan = $row['pan_number'];
             $adhar = $row['adhar_number'];
             $status = $row['status'];
@@ -24,6 +25,7 @@ if (isset($_POST['action'])) {
                 "id" => $id,
                 "email" => $email,
                 "password" => $password,
+                "role" => $role,
                 "pan" => $pan,
                 "adhar" => $adhar,
                 "status" => $status,

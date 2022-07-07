@@ -14,12 +14,12 @@ $user_id = '';
 $role = '';
 
 if ($role_name === 'admin') {
-    $email = 'adriel97@example.com';
-    $password = '63f865130b89ac6e47c1f8a76dea7695';
+    $email = 'igerlach@example.net';
+    $password = '2c5c7b112348b23dc7fe919ccbe1a41fdd7fd7fe';
 }
 if ($role_name === 'client') {
-    $email = 'vicenta83@example.com';
-    $password = 'ed812b02ed4880bee5b334900aadda23';
+    $email = 'sondricka@example.net';
+    $password = '56540f1a29f459069acbd751bf8045e68b491bbf';
 }
 if ($role_name === 'customer') {
     $email = 'lcrona@example.com';
