@@ -15,13 +15,13 @@
                 <div class="content-header">
                     <div class="d-flex align-items-center">
                         <div class="me-auto">
-                            <h3 class="page-title">Invoice List</h3>
+                            <h3 class="page-title">User Service List</h3>
                             <div class="d-inline-block align-items-center">
                                 <nav>
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                                        <li class="breadcrumb-item" aria-current="page">Invoice</li>
-                                        <li class="breadcrumb-item active" aria-current="page">Invoice List</li>
+                                        <li class="breadcrumb-item" aria-current="page">Service</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Service List</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -36,8 +36,9 @@
                         <div class="col-xl-10 col-lg-9 col-12">
                             <div class="box">
                                 <div class="box-header with-border">
-                                    <h4 class="box-title">User List</h4>
-                                    <h6 class="box-subtitle">Export User List to Copy, CSV, Excel, PDF & Print</h6>
+                                    <h4 class="box-title">User Service List</h4>
+                                    <h6 class="box-subtitle">Export Use Service List to Copy, CSV, Excel, PDF & Print</h6>
+                                    <button class="btn btn-primary">Show All</button>
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
@@ -151,7 +152,7 @@
             </div>
         </div>
         <!-- /.content-wrapper -->
-        <?php include '../templates/admin-footer.php' ?>
+        <?php include(ROOT . "templates/admin-footer.php") ?>
 
 
     </div>
@@ -161,28 +162,44 @@
 
 
     <!-- Vendor JS -->
-    <script src="../js/vendors.min.js"></script>
-    <script src="../js/pages/chat-popup.js"></script>
-    <script src="../assets/icons/feather-icons/feather.min.js"></script>
-    <script src="../assets/vendor_components/datatable/datatables.min.js"></script>
-    <script src="../assets/vendor_components/sweetalert/sweetalert.min.js"></script>
+    <script src="<?php echo ROOT ?>js/vendors.min.js"></script>
+    <script src="<?php echo ROOT ?>js/pages/chat-popup.js"></script>
+    <script src="<?php echo ROOT ?>assets/icons/feather-icons/feather.min.js"></script>
+    <script src="<?php echo ROOT ?>assets/vendor_components/datatable/datatables.min.js"></script>
+    <script src="<?php echo ROOT ?>assets/vendor_components/sweetalert/sweetalert.min.js"></script>
 
 
 
     <!-- Florence Admin App -->
-    <script src="../js/jquery.smartmenus.js"></script>
-    <script src="../js/menus.js"></script>
-    <script src="../js/template.js"></script>
+    <script src="<?php echo ROOT ?>js/jquery.smartmenus.js"></script>
+    <script src="<?php echo ROOT ?>js/menus.js"></script>
+    <script src="<?php echo ROOT ?>js/template.js"></script>
 
 </body>
 
 
 <script>
     $(document).ready(function() {
-        $('#user_service').DataTable({
+        var table = $('#user_service').DataTable({
+            paging: true,
             processing: true,
             serverSide: true,
             ajax: '<?= ROOT ?>action/services.php',
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print', {
+                    text: 'Show All',
+                    action: function(e, dt, node, config) {
+                        table.paging = 'false';
+                        table.draw();
+                    }
+                },
+            ],
+            pageLength: 10,
+        });
+        $('.btn').click(function() {
+            table.paging = false;
+            table.draw();
         });
     })
 </script>
