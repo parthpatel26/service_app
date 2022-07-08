@@ -278,14 +278,12 @@
                 success: function(data) {
                     const result = JSON.parse(data);
 
-                    function getServices() {
-                        var service = '';
-                        var service_filter = result['service'];
-                        for (var key in service_filter) {
-                            service += '<option value=' + service_filter[key]['name'] + '>' + service_filter[key]['name'] + '</option>'
-                        }
-                        return service;
+                    var service = '';
+                    var service_filter = result['service'];
+                    for (var key in service_filter) {
+                        service += '<option value=' + service_filter[key]['name'] + '>' + service_filter[key]['name'] + '</option>'
                     }
+                    return service;
                 },
                 complete: function(service) {
                     api
@@ -300,9 +298,9 @@
                             var title = $(cell).text();
                             if (colIdx == 2) {
                                 console.log(service);
-                                $(cell).html('<select> ' + getServices() + '</select>');
+                                $(cell).html('<select> ' + service + '</select>');
                             } else {
-
+                                $(cell).html('<input type="text" placeholder=' + title + '>');
                             }
                             // On every keypress in this input
                             $(
