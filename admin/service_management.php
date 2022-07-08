@@ -38,15 +38,18 @@
                                 <div class="box-header with-border">
                                     <h4 class="box-title">User Service List</h4>
                                     <h6 class="box-subtitle">Export Use Service List to Copy, CSV, Excel, PDF & Print</h6>
-                                    <button class="btn btn-primary">Show All</button>
+                                    <button class="btn-all btn-primary">Show All</button>
+                                    <button class="btn-year btn-primary" data-value='2020-21'>2020-21</button>
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
 
                                         <table id="user_service" class="table table-lg" width='100%'>
                                             <thead>
+
                                                 <tr>
                                                     <th>Service ID</th>
+                                                    <th>user ID</th>
                                                     <th>Service</th>
                                                     <th>Year</th>
                                                     <th>Price</th>
@@ -55,8 +58,8 @@
                                                     <th>Assigned To</th>
                                                     <!-- <th class="text-center">Actions</th> -->
                                                 </tr>
-                                            </thead>
 
+                                            </thead>
                                         </table>
 
                                     </div>
@@ -166,8 +169,9 @@
     <script src="<?php echo ROOT ?>js/pages/chat-popup.js"></script>
     <script src="<?php echo ROOT ?>assets/icons/feather-icons/feather.min.js"></script>
     <script src="<?php echo ROOT ?>assets/vendor_components/datatable/datatables.min.js"></script>
-    <script src="<?php echo ROOT ?>assets/vendor_components/sweetalert/sweetalert.min.js"></script>
 
+    <script src="<?php echo ROOT ?>assets/vendor_components/sweetalert/sweetalert.min.js"></script>
+    <script src="<?php echo ROOT ?>assets/vendor_components/datatable/dataTables.cellEdit.js"></script>
 
 
     <!-- Florence Admin App -->
@@ -179,27 +183,199 @@
 
 
 <script>
-    $(document).ready(function() {
-        var table = $('#user_service').DataTable({
-            paging: true,
-            processing: true,
-            serverSide: true,
-            ajax: '<?= ROOT ?>action/services.php',
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print', {
-                    text: 'Show All',
-                    action: function(e, dt, node, config) {
-                        table.paging = 'false';
-                        table.draw();
+    var table = null;
+    var filter = {};
+
+    var cellOption = {
+        onUpdate: myCallbackFunction,
+        inputCss: 'my-input-class',
+        columns: [0, 1, 2],
+        allowNulls: {
+            columns: [1],
+            errorClass: 'error'
+        },
+        confirmationButton: {
+            confirmCss: 'my-confirm-class',
+            cancelCss: 'my-cancel-class',
+        },
+        inputTypes: [{
+                column: 0,
+                type: 'text',
+                options: 'null'
+            },
+            {
+                column: 1,
+                type: 'list',
+                options: [{
+                        value: '1',
+                        display: 'ITR'
+                    },
+                    {
+                        value: '2',
+                        display: 'GST'
+                    },
+                    {
+                        value: '3',
+                        display: "Tally"
+                    }
+                ]
+            },
+        ]
+    }
+
+    var tableOption = {
+        paging: true,
+        processing: true,
+        serverSide: true,
+        pageLength: 10,
+        ajax: '<?= ROOT ?>action/services.php',
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print', {
+                text: 'Show All',
+                action: function(e, dt, node, config) {
+                    console.log(">>>");
+                    table.paging = false;
+                }
+            },
+        ],
+        columns: [{
+                data: '0'
+            },
+            {
+                data: "1"
+            },
+            {
+                data: "2"
+            },
+            {
+                data: "3"
+            },
+            {
+                data: "4"
+            },
+            {
+                data: "5"
+            },
+            {
+                data: "6"
+            },
+            {
+                data: "7"
+            },
+        ],
+
+
+        initComplete: function() {
+            var api = this.api();
+
+            $.ajax({
+                url: '../action/services.php',
+                type: "POST",
+                data: {
+                    action: 'service_filters'
+                },
+                success: function(data) {
+                    const result = JSON.parse(data);
+
+                    function getServices() {
+                        var service = '';
+                        var service_filter = result['service'];
+                        for (var key in service_filter) {
+                            service += '<option value=' + service_filter[key]['name'] + '>' + service_filter[key]['name'] + '</option>'
+                        }
+                        return service;
                     }
                 },
-            ],
-            pageLength: 10,
-        });
+                complete: function(service) {
+                    api
+                        .columns()
+                        .eq(0)
+                        .each(function(colIdx) {
+                            // Set the header cell to contain the input elemen
+                            var cursorPosition = null;
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            if (colIdx == 2) {
+                                console.log(service);
+                                $(cell).html('<select> ' + getServices() + '</select>');
+                            } else {
+
+                            }
+                            // On every keypress in this input
+                            $(
+                                    'input',
+                                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                                )
+                                .off('keyup change')
+                                .on('change', function(e) {
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr = 'search'; //$(this).parents('th').find('select').val();
+                                    cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api
+                                        .column(colIdx)
+                                        .search(
+                                            this.value != '' ?
+                                            this.value :
+                                            '',
+                                            this.value != '',
+                                            this.value == ''
+                                        )
+                                        .draw();
+                                })
+                                .on('keyup', function(e) {
+                                    e.stopPropagation();
+                                    $(this).trigger('change');
+                                    $(this)
+                                        .focus()[0]
+                                        .setSelectionRange(cursorPosition, cursorPosition);
+                                });
+                        });
+
+                }
+            });
+            // For each column
+        }
+    };
+
+    function myCallbackFunction(updatedCell, updatedRow, oldValue) {
+        console.log("The new value for the cell is: " + updatedCell.data());
+        console.log("The values for each cell in that row are: " + updatedRow.data());
+    }
+
+
+    function drawTable(id, option) {
+        if (table) {
+            table.destroy();
+            table.MakeCellsEditable("destroy");
+        }
+        table = $(id).DataTable(option);
+        table.MakeCellsEditable(cellOption)
+    }
+
+    function getDataUrl() {
+        var url = '<?= ROOT ?>action/services.php?action=getData';
+        for (var key in filter) {
+            url += '&' + key + '=' + filter[key];
+        }
+        return url;
+    }
+
+    $(document).ready(function() {
+        $('#user_service thead tr').clone(true).addClass('filters').insertBefore('#user_service thead tr')
+        drawTable('#user_service', tableOption);
+
         $('.btn').click(function() {
-            table.paging = false;
-            table.draw();
+            var year = $(this).data('value');
+            filter['year'] = year;
+            tableOption.paging = false;
+            tableOption.ajax = getDataUrl();
+            drawTable('#user_service', tableOption);
+
         });
     })
 </script>
