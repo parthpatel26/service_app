@@ -173,6 +173,12 @@
 
             </ul>
         </li>
+        <li><a href="service_management.php"><i class="ti-user"></i>User Service Management</a>
+            <ul>
+                <li><a href=""><i class="ti-more"></i>Add Service</a></li>
+
+            </ul>
+        </li>
     </ul>
 </nav>
 <script>

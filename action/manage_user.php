@@ -53,6 +53,8 @@ if (isset($_POST['form_name'])) {
             'user_id' => $user_id,
         );
         echo json_encode($arr);
+        exit;
     }
 }
+
 mysqli_close($connect);
