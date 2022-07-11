@@ -48,14 +48,17 @@
                                             <thead>
 
                                                 <tr>
-                                                    <th>Service ID</th>
-                                                    <th>user ID</th>
+                                                    <th>Service_ID</th>
+                                                    <th>User_ID</th>
                                                     <th>Service</th>
                                                     <th>Year</th>
                                                     <th>Price</th>
                                                     <th>Payment</th>
                                                     <th>Status</th>
                                                     <th>Assigned To</th>
+                                                    <th>Created At</th>
+                                                    <th>Modified At</th>
+
                                                     <!-- <th class="text-center">Actions</th> -->
                                                 </tr>
 
@@ -189,7 +192,7 @@
     var cellOption = {
         onUpdate: myCallbackFunction,
         inputCss: 'my-input-class',
-        columns: [0, 1, 2],
+        columns: [2, 5, 6, 7],
         allowNulls: {
             columns: [1],
             errorClass: 'error'
@@ -198,53 +201,24 @@
             confirmCss: 'my-confirm-class',
             cancelCss: 'my-cancel-class',
         },
-        inputTypes: [{
-                column: 0,
-                type: 'text',
-                options: 'null'
-            },
-            {
-                column: 1,
-                type: 'list',
-                options: [{
-                        value: '1',
-                        display: 'ITR'
-                    },
-                    {
-                        value: '2',
-                        display: 'GST'
-                    },
-                    {
-                        value: '3',
-                        display: "Tally"
-                    }
-                ]
-            },
-        ]
+        inputTypes: []
     }
 
     var tableOption = {
         paging: true,
         processing: true,
         serverSide: true,
-        pageLength: 10,
         ajax: '<?= ROOT ?>action/services.php',
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print', {
-                text: 'Show All',
-                action: function(e, dt, node, config) {
-                    console.log(">>>");
-                    table.paging = false;
-                }
-            },
-        ],
+        dom: 'lBfrtip',
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+        lengthMenu: [10, 25, 50, 100, -1],
         columns: [{
                 data: '0'
             },
             {
                 data: "1"
             },
+
             {
                 data: "2"
             },
@@ -263,86 +237,117 @@
             {
                 data: "7"
             },
+            {
+                data: "8"
+            },
+            {
+                data: "9"
+            },
         ],
 
 
         initComplete: function() {
             var api = this.api();
 
-            $.ajax({
-                url: '../action/services.php',
-                type: "POST",
-                data: {
-                    action: 'service_filters'
-                },
-                success: function(data) {
-                    const result = JSON.parse(data);
-
-                    var service = '';
-                    var service_filter = result['service'];
-                    for (var key in service_filter) {
-                        service += '<option value=' + service_filter[key]['name'] + '>' + service_filter[key]['name'] + '</option>'
+            api
+                .columns()
+                .eq(0)
+                .each(function(colIdx) {
+                    // Set the header cell to contain the input elemen
+                    var cursorPosition = null;
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    if (colIdx == 2) {
+                        $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + service + '</select>');
+                    } else if (colIdx == 3) {
+                        $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + year + '</select>');
+                    } else if (colIdx == 7) {
+                        $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + client + '</select>');
+                    } else if (colIdx == 5) {
+                        var regexr = '{search}';
+                        $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + payment + '</select>');
+                    } else if (colIdx == 6) {
+                        $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + status + '</select>');
+                    } else if (colIdx == 8) {
+                        $(cell).html('<input class="form-control" type="date" placeholder=' + title + '>');
+                    } else if (colIdx == 9) {
+                        $(cell).html('<input class="form-control" type="date" placeholder=' + title + '>');
+                    } else {
+                        $(cell).html('<input class="form-control" type="search" placeholder=' + title + '>');
                     }
-                    return service;
-                },
-                complete: function(service) {
-                    api
-                        .columns()
-                        .eq(0)
-                        .each(function(colIdx) {
-                            // Set the header cell to contain the input elemen
-                            var cursorPosition = null;
-                            var cell = $('.filters th').eq(
-                                $(api.column(colIdx).header()).index()
-                            );
-                            var title = $(cell).text();
-                            if (colIdx == 2) {
-                                console.log(service);
-                                $(cell).html('<select> ' + service + '</select>');
-                            } else {
-                                $(cell).html('<input type="text" placeholder=' + title + '>');
-                            }
-                            // On every keypress in this input
-                            $(
-                                    'input',
-                                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                    // On every keypress in this input
+                    $(
+                            'input , select',
+                            $('.filters th').eq($(api.column(colIdx).header()).index())
+                        )
+                        .off('keyup change')
+                        .on('change', function(e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            //$(this).parents('th').find('select').val();
+                            cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != '' ?
+                                    this.value :
+                                    '',
+                                    this.value != '',
+                                    this.value == ''
                                 )
-                                .off('keyup change')
-                                .on('change', function(e) {
-                                    // Get the search value
-                                    $(this).attr('title', $(this).val());
-                                    var regexr = 'search'; //$(this).parents('th').find('select').val();
-                                    cursorPosition = this.selectionStart;
-                                    // Search the column for that value
-                                    api
-                                        .column(colIdx)
-                                        .search(
-                                            this.value != '' ?
-                                            this.value :
-                                            '',
-                                            this.value != '',
-                                            this.value == ''
-                                        )
-                                        .draw();
-                                })
-                                .on('keyup', function(e) {
-                                    e.stopPropagation();
-                                    $(this).trigger('change');
-                                    $(this)
-                                        .focus()[0]
-                                        .setSelectionRange(cursorPosition, cursorPosition);
-                                });
+                                .draw();
+                        })
+                        .on('keyup', function(e) {
+                            e.stopPropagation();
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
                         });
+                });
 
-                }
-            });
-            // For each column
         }
-    };
+        // For each column
+    }
 
-    function myCallbackFunction(updatedCell, updatedRow, oldValue) {
-        console.log("The new value for the cell is: " + updatedCell.data());
-        console.log("The values for each cell in that row are: " + updatedRow.data());
+    function myCallbackFunction(updatedCell, updatedRow, oldValue, newValue) {
+        var row = updatedRow.data()[0];
+        console.log('new value >>>', newValue);
+        console.log('Service ID >>>', row);
+        var column = updatedCell[0][0]['column'];
+
+        var update_options = {
+            url: '../action/services.php',
+            type: "POST",
+            data: {
+                action: 'update',
+                service_id: row,
+                value: newValue
+            },
+            success: function(data) {
+                console.log(data)
+            },
+        }
+
+        if (column == 2) {
+            update_options['data']['column'] = '_service_id'
+            $.ajax(update_options)
+        }
+        if (column == 5) {
+            update_options['data']['column'] = 'payment'
+            $.ajax(update_options)
+        }
+        if (column == 6) {
+            update_options['data']['column'] = 'status'
+            $.ajax(update_options)
+        }
+        if (column == 7) {
+            update_options['data']['column'] = '_assigned_to'
+            $.ajax(update_options)
+        }
     }
 
 
@@ -363,18 +368,101 @@
         return url;
     }
 
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function updateCellOptions(column, type, filter) {
+        const search = what => cellOption.inputTypes.findIndex(element => element.column == what);
+        const found = search(column);
+        if (found == -1) {
+            cellOption.inputTypes.push({
+                'column': column,
+                'type': type,
+                options: []
+            })
+            const lastIndex = cellOption.inputTypes.length;
+            if (column == 5 || column == 6) {
+                cellOption.inputTypes[lastIndex - 1].options.push({
+                    'value': filter,
+                    'display': capitalizeFirstLetter(filter)
+                })
+            } else {
+                cellOption.inputTypes[lastIndex - 1].options.push({
+                    'value': filter['id'],
+                    'display': capitalizeFirstLetter(filter['name'])
+                })
+            }
+
+        } else {
+            if (column == 5 || column == 6) {
+                cellOption.inputTypes[found].options.push({
+                    'value': filter,
+                    'display': capitalizeFirstLetter(filter)
+                })
+            } else {
+                cellOption.inputTypes[found].options.push({
+                    'value': filter['id'],
+                    'display': capitalizeFirstLetter(filter['name'])
+                })
+            }
+        }
+    }
+
+    var service = '<option value=""> Select Service </option>';
+    var year = '<option value=""> Select Year </option>';
+    var client = '<option value=""> Select Client </option>';
+    var status = '<option value=""> Select Status </option>';
+    var payment = '<option value=""> Select Payment </option>';
+
+
     $(document).ready(function() {
+        $.ajax({
+            url: '../action/services.php',
+            type: "POST",
+            data: {
+                action: 'service_filters'
+            },
+            success: function(data) {
+                const result = JSON.parse(data);
+                console.log(result);
+
+                var service_filter = result['service'];
+                for (var key in service_filter) {
+                    updateCellOptions(2, 'list', service_filter[key])
+                    service += '<option  data-id=' + service_filter[key]['id'] + ' value=' + service_filter[key]['name'] + '>' + service_filter[key]['name'] + '</option>'
+                }
+
+                var year_filter = result['year'];
+                for (var key in year_filter) {
+                    year += '<option  data-id=' + year_filter[key]['id'] + ' value=' + year_filter[key]['name'] + '>' + year_filter[key]['name'] + '</option>'
+                }
+
+                var client_filter = result['assigned_to'];
+                for (var key in client_filter) {
+                    updateCellOptions(7, 'list', client_filter[key])
+
+                    client += '<option  data-id=' + client_filter[key]['id'] + ' value=' + client_filter[key]['name'] + '>' + client_filter[key]['name'] + '</option>'
+                }
+                var status_filter = result['status'];
+                for (var key in status_filter) {
+                    updateCellOptions(6, 'list', status_filter[key])
+
+                    status += '<option value=' + status_filter[key] + '>' + capitalizeFirstLetter(status_filter[key]) + '</option>'
+                }
+                var payment_filter = result['payment'];
+                for (var key in payment_filter) {
+                    updateCellOptions(5, 'list', payment_filter[key])
+
+                    payment += '<option value=' + payment_filter[key] + '>' + capitalizeFirstLetter(payment_filter[key]) + '</option>'
+                }
+                drawTable('#user_service', tableOption);
+
+
+            },
+        })
         $('#user_service thead tr').clone(true).addClass('filters').insertBefore('#user_service thead tr')
-        drawTable('#user_service', tableOption);
 
-        $('.btn').click(function() {
-            var year = $(this).data('value');
-            filter['year'] = year;
-            tableOption.paging = false;
-            tableOption.ajax = getDataUrl();
-            drawTable('#user_service', tableOption);
-
-        });
     })
 </script>
 

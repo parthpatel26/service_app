@@ -5,11 +5,46 @@ include '../includes/constant.php';
 // echo '<pre>';
 // print_r($_REQUEST);
 // echo '</pre>';
+$table = 'user_service_master';
+
+function get_enum($column_name, $table, $connect)
+{
+    $sql = "SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = '$table' AND COLUMN_NAME = '$column_name'";
+
+    $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+
+    $row = mysqli_fetch_array($result);
+    $enumList = explode(",", str_replace("'", "", substr($row['COLUMN_TYPE'], 5, (strlen($row['COLUMN_TYPE']) - 6))));
+    return  $enumList;
+}
+$enum  = get_enum('status', $table, $connect);
+
 if (isset($_REQUEST['action'])) {
+    if (($_REQUEST['action'] == 'update')) {
+        $service_id = $_REQUEST['service_id'];
+        $value = $_REQUEST['value'];
+        $column = $_REQUEST['column'];
+
+        $sql  = "UPDATE  $table
+        SET $column = '$value'
+        WHERE user_service_id = $service_id";
+
+        $result = mysqli_query($connect, $sql);
+
+        if ($result) {
+            echo 'Updated ' .  $column . ' to' .  $value . ' at service id >>>' . $service_id;
+        } else {
+            echo ("Error description: " . mysqli_error($connect));
+        }
+        print_r($column);
+        exit;
+    }
     if (($_REQUEST['action'] == 'service_filters')) {
         $filters = array();
         $service = array();
         $year = array();
+        $assigned_to = array();
 
         $sql = "SELECT * FROM services_master WHERE is_deleted = '0'";
         $result = mysqli_query($connect, $sql);
@@ -33,16 +68,27 @@ if (isset($_REQUEST['action'])) {
             );
         }
 
+        $sql = "SELECT * FROM user_master AS um JOIN user_details AS ud ON (um.user_id = ud._user_id) WHERE um.is_deleted = '0' AND um.role = '2' ";
+        $result = mysqli_query($connect, $sql);
+
+        while ($row = mysqli_fetch_array($result)) {
+            $assigned_to[] = array(
+                "id" => $row['user_id'],
+                "name" => $row['first_name'],
+            );
+        }
 
         $filters['service'] = $service;
         $filters['year'] = $year;
+        $filters['assigned_to'] = $assigned_to;
+        $filters['status'] = get_enum('status', $table, $connect);
+        $filters['payment'] = get_enum('payment', $table, $connect);
 
         print_r(json_encode($filters));
         exit;
     }
 }
 
-$table = 'user_service_master';
 
 // Table's primary key
 $primaryKey = 'user_service_id';
@@ -60,6 +106,8 @@ $columns = array(
     array('db' => '`us`.`payment`',     'dt' => 5, 'field' => 'payment'),
     array('db' => '`us`.`status`',     'dt' => 6, 'field' => 'status'),
     array('db' => '`ud`.`first_name`',     'dt' => 7, 'field' => 'first_name'),
+    array('db' => '`us`.`created_at`',     'dt' => 8, 'field' => 'created_at'),
+    array('db' => '`us`.`modified_at`',     'dt' => 9, 'field' => 'modified_at'),
 );
 
 // SQL server connection information
@@ -78,9 +126,9 @@ $sql_details = array(
 // require( 'ssp.class.php' );
 require(ROOT . 'assets/lib/DataTable.php');
 
-$joinQuery = "FROM `user_service_master` AS `us` JOIN `user_master` AS `um` ON (`us`.`_user_id` = `um`.`user_id`)  JOIN `services_master` AS `s` ON ( `s`.`service_id`= `us`.`_service_id`)  JOIN `financial_year_master` AS `y` ON ( `y`.`year_id`= `us`.`_year_id`) JOIN `user_details` AS `ud` ON ( `ud`.`_user_id`= `us`.`_assigned_to`)";
+$joinQuery = "FROM `user_service_master` AS `us` JOIN `user_master` AS `um` ON (`us`.`_user_id` = `um`.`user_id`)  JOIN `services_master` AS `s` ON ( `s`.`service_id`= `us`.`_service_id`)  JOIN `financial_year_master` AS `y` ON ( `y`.`year_id`= `us`.`_year_id`) JOIN `user_details` AS `ud` ON ( `ud`.`_user_id`= `us`.`_assigned_to`) ";
 $extraWhere = "`um`.`is_deleted` = '0'";
-// $groupBy = "`u`.`office`";
+// $groupBy = "`u`.`office`";   
 // $having = "`u`.`salary` >= 140000";
 
 echo json_encode(

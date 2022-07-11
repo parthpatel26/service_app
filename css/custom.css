@@ -1,8 +1,10 @@
-.apexcharts-menu-item{
+.apexcharts-menu-item {
     color: black;
 }
-.pull-right{
-    float: right;}
+
+.pull-right {
+    float: right;
+}
 
 .my-input-class {
     padding: 3px 6px;
@@ -37,8 +39,12 @@
     border-color: #a94442;
 }
 
-.destroy-button{
-    padding:5px 10px 5px 10px;
+.destroy-button {
+    padding: 5px 10px 5px 10px;
     border: 1px blue solid;
-    background-color:lightgray;
+    background-color: lightgray;
+}
+
+.text-start {
+    text-align: start;
 }
