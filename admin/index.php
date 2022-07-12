@@ -341,11 +341,128 @@
 	<script src="../js/jquery.smartmenus.js"></script>
 	<script src="../js/menus.js"></script>
 	<script src="../js/template.js"></script>
-	<script src="../js/pages/dashboard3.js"></script>
+	<!-- <script src="../js/pages/dashboard3.js"></script> -->
 
 
 </body>
+<script>
+	var categories = []
+	var rev = []
 
-<!-- Mirrored from florence-admin-template.multipurposethemes.com/bs5/main-horizontal/index3.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 30 Jun 2022 08:05:30 GMT -->
+	var options = {
+		series: [{
+			name: "Profit",
+			data: rev
+		}],
+		chart: {
+			foreColor: "#333333",
+			height: 290,
+			type: 'area',
+			zoom: {
+				enabled: false
+			}
+		},
+		colors: ['#ea9715'],
+		dataLabels: {
+			enabled: false,
+		},
+		stroke: {
+			show: true,
+			curve: 'straight',
+			lineCap: 'butt',
+			colors: undefined,
+			width: 4,
+			dashArray: 0,
+		},
+		markers: {
+			size: 5,
+			colors: '#ffffff',
+			strokeColors: '#ea9715',
+			strokeWidth: 4,
+			strokeOpacity: 0.9,
+			strokeDashArray: 0,
+			fillOpacity: 1,
+			discrete: [],
+			shape: "circle",
+			radius: 5,
+			offsetX: 0,
+			offsetY: 0,
+			onClick: undefined,
+			onDblClick: undefined,
+			hover: {
+				size: undefined,
+				sizeOffset: 3
+			}
+		},
+		grid: {
+			borderColor: '#f7f7f7',
+			row: {
+				colors: ['transparent'], // takes an array which will be repeated on columns
+				opacity: 0
+			},
+			yaxis: {
+				lines: {
+					show: true,
+				},
+
+			},
+		},
+		fill: {
+			type: "gradient",
+			gradient: {
+				shadeIntensity: 1,
+				opacityFrom: 0.01,
+				opacityTo: 1,
+				stops: [0, 90, 100]
+			}
+		},
+		xaxis: {
+			categories: categories,
+			labels: {
+				show: true,
+			},
+			axisBorder: {
+				show: true
+			},
+			axisTicks: {
+				show: true
+			},
+			tooltip: {
+				enabled: true,
+			},
+		},
+		yaxis: {
+			labels: {
+				show: false,
+				formatter: function(val) {
+					return val + "K";
+				}
+			}
+
+		},
+	};
+	$(document).ready(function() {
+		$.ajax({
+			url: '../action/charts.php',
+			type: "POST",
+			data: {
+				action: 'count_user'
+			},
+			success: function(data) {
+				const result = JSON.parse(data);
+				for (var key in result) {
+					categories.push(result[key][1]);
+					rev.push(result[key][2]);
+				}
+				var chart = new ApexCharts(document.querySelector("#charts_widget_2_chart"), options);
+				console.log(options.xaxis.categories);
+				chart.render();
+
+			},
+
+		});
+
+	})
+</script>
 
 </html>

@@ -2,40 +2,66 @@
 include '../includes/config.php';
 include '../includes/constant.php';
 
-if (isset($_POST['action'])) {
-    if ($_POST['action'] == 'load_users') {
+if (isset($_REQUEST['action'])) {
+    if ($_REQUEST['action'] == 'getData') {
+        $table = 'user_master';
 
-        $return_arr = array();
+        // Table's primary key
+        $primaryKey = 'user_id';
 
-        $sql = "SELECT * FROM user_master AS U INNER JOIN user_details AS D ON U.user_id = D._user_id WHERE U.is_deleted='0'";
+        // Array of database columns which should be read and sent back to DataTables.
+        // The `db` parameter represents the column name in the database, while the `dt`
+        // parameter represents the DataTables column identifier. In this case simple
+        // indexes
+        $columns = array(
+            array('db' => '`um`.`user_id`', 'dt' => 0, 'field' => 'user_id'),
+            array('db' => '`um`.`email`',  'dt' => 1, 'field' => 'email'),
+            array('db' => '`um`.`password`',  'dt' => 2, 'field' => 'password'),
+            array('db' => '`um`.`role`',  'dt' => 3, 'field' => 'role',   'formatter' => function ($d, $row) {
+                if ($d == 1) {
+                    return $d = 'Admin';
+                }
+                if ($d == 2) {
+                    return $d = 'Client';
+                }
+                if ($d == 3) {
+                    return $d = 'Customer';
+                }
+            }),
+            array('db' => '`ud`.`first_name`',  'dt' => 4, 'field' => 'first_name'),
+            array('db' => '`ud`.`pan_number`',  'dt' => 5, 'field' => 'pan_number'),
+            array('db' => '`ud`.`adhar_number`',  'dt' => 6, 'field' => 'adhar_number'),
+            array('db' => '`um`.`status`',  'dt' => 7, 'field' => 'status'),
+            array('db' => '`ud`.`created_at`',  'dt' => 8, 'field' => 'created_at'),
 
-        $result = mysqli_query($connect, $sql);
-        $users = array();
 
-        while ($row = mysqli_fetch_array($result)) {
-            $id = $row['user_id'];
-            $email = $row['email'];
-            $password = $row['password'];
-            $role = $row['role'];
-            $pan = $row['pan_number'];
-            $adhar = $row['adhar_number'];
-            $status = $row['status'];
-            $created = $row[26];
-            $users[] = array(
-                "id" => $id,
-                "email" => $email,
-                "password" => $password,
-                "role" => $role,
-                "pan" => $pan,
-                "adhar" => $adhar,
-                "status" => $status,
-                "created" => $created,
-            );
-        }
+        );
 
-        $return_arr['users'] = $users;
+        // SQL server connection information
+        $sql_details = array(
+            'user' => DB_USER,
+            'pass' => DB_PASS,
+            'db'   => DB_NAME,
+            'host' => DB_SERVER
+        );
 
-        print_r(json_encode($return_arr));
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * If you just want to use the basic configuration for DataTables with PHP
+ * server-side, there is no need to edit below this line.
+ */
+
+        // require( 'ssp.class.php' );
+        require(ROOT . 'assets/lib/DataTable.php');
+
+        $joinQuery = "FROM `user_master` AS `um` JOIN `user_details` AS `ud` ON (`ud`.`_user_id` = `um`.`user_id`)";
+        $extraWhere = "`um`.`is_deleted` = '0'";
+        // $groupBy = "`u`.`office`";   
+        // $having = "`u`.`salary` >= 140000";
+
+        echo json_encode(
+            SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere)
+        );
+
         exit;
     }
     if ($_POST['action'] == 'count_user') {
@@ -66,12 +92,24 @@ if (isset($_POST['action'])) {
 
     if ($_POST['action'] == 'delete_user' && $_POST['id']) {
         $id = $_POST['id'];
-        print_r(json_encode($id));
+        $sql = "UPDATE user_master SET is_deleted='1' WHERE user_id='$id'";
+        $result = mysqli_query($connect, $sql);
+        if ($result) {
+            echo ('0');
+        } else {
+            echo (mysqli_error($connect));
+        }
         exit;
     }
     if ($_POST['action'] == 'block_user' && $_POST['id']) {
         $id = $_POST['id'];
-        print_r(json_encode($id));
+        $sql = "UPDATE user_master SET status='inactive' WHERE user_id='$id'";
+        $result = mysqli_query($connect, $sql);
+        if ($result) {
+            echo ('0');
+        } else {
+            echo (mysqli_error($connect));
+        }
         exit;
     }
 }

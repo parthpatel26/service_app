@@ -37,9 +37,7 @@
                             <div class="box">
                                 <div class="box-header with-border">
                                     <h4 class="box-title">User Service List</h4>
-                                    <h6 class="box-subtitle">Export Use Service List to Copy, CSV, Excel, PDF & Print</h6>
-                                    <button class="btn-all btn-primary">Show All</button>
-                                    <button class="btn-year btn-primary" data-value='2020-21'>2020-21</button>
+                                    <h6 class="box-subtitle">Export User Service List to Copy, CSV, Excel, PDF & Print</h6>
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
@@ -244,11 +242,13 @@
                 data: "9"
             },
         ],
-
+        columnDefs: [{
+            className: "payment",
+            targets: [5]
+        }],
 
         initComplete: function() {
             var api = this.api();
-
             api
                 .columns()
                 .eq(0)
@@ -315,6 +315,7 @@
 
     function myCallbackFunction(updatedCell, updatedRow, oldValue, newValue) {
         var row = updatedRow.data()[0];
+        console.log('old value >>>', oldValue);
         console.log('new value >>>', newValue);
         console.log('Service ID >>>', row);
         var column = updatedCell[0][0]['column'];
@@ -329,25 +330,23 @@
             },
             success: function(data) {
                 console.log(data)
+
             },
         }
-
         if (column == 2) {
             update_options['data']['column'] = '_service_id'
-            $.ajax(update_options)
         }
         if (column == 5) {
             update_options['data']['column'] = 'payment'
-            $.ajax(update_options)
         }
         if (column == 6) {
             update_options['data']['column'] = 'status'
-            $.ajax(update_options)
         }
         if (column == 7) {
             update_options['data']['column'] = '_assigned_to'
-            $.ajax(update_options)
         }
+        $.ajax(update_options)
+
     }
 
 
@@ -357,7 +356,8 @@
             table.MakeCellsEditable("destroy");
         }
         table = $(id).DataTable(option);
-        table.MakeCellsEditable(cellOption)
+        table.MakeCellsEditable(cellOption);
+
     }
 
     function getDataUrl() {
@@ -369,7 +369,7 @@
     }
 
     function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        return string.charAt(0).toUpperCase() + string.slice(1).replace(/_/g, " ");
     }
 
     function updateCellOptions(column, type, filter) {
@@ -408,6 +408,22 @@
             }
         }
     }
+
+    function statusLed(cls) {
+        $('.' + cls).each(function() {
+            var cellText = $(this).find('p').html();
+            if (cellText == 'Paid') {
+                $(this).find('.led').addClass('led-green')
+            }
+            if (cellText == 'Unpaid') {
+                $(this).find('.led').addClass('led-red')
+            }
+            if (cellText == 'In Progress') {
+                $(this).find('.led').addClass('led-yellow')
+            }
+        })
+    }
+
 
     var service = '<option value=""> Select Service </option>';
     var year = '<option value=""> Select Year </option>';
@@ -456,7 +472,7 @@
 
                     payment += '<option value=' + payment_filter[key] + '>' + capitalizeFirstLetter(payment_filter[key]) + '</option>'
                 }
-                drawTable('#user_service', tableOption);
+                drawTable('#user_service', tableOption);;
 
 
             },

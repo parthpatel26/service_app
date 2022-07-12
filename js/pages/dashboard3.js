@@ -1,7 +1,5 @@
 //[Dashboard Javascript]
 
-//Project:	Florence Admin - Responsive Admin Template
-//Primary use:   Used only for the main dashboard (index.html)
 
 
 $(function () {

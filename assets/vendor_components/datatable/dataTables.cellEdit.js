@@ -164,7 +164,7 @@ function getInputHtml(currentColumnIndex, settings, oldValue) {
         case "list":
             input.html = startWrapperHtml + "<select class='" + inputCss + "' onchange='$(this).updateEditableCell(this);'>";
             $.each(inputSetting.options, function (index, option) {
-                if (oldValue == option.value) {
+                if (oldValue == option.display) {
                     input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
                 } else {
                     input.html = input.html + "<option value='" + option.value + "' >" + option.display + "</option>"
@@ -176,7 +176,7 @@ function getInputHtml(currentColumnIndex, settings, oldValue) {
         case "list-confirm": // List w/ confirm
             input.html = startWrapperHtml + "<select class='" + inputCss + "'>";
             $.each(inputSetting.options, function (index, option) {
-                if (oldValue == option.value) {
+                if (oldValue == option.display) {
                     input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
                 } else {
                     input.html = input.html + "<option value='" + option.value + "' >" + option.display + "</option>"

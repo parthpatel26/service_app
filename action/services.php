@@ -97,14 +97,29 @@ $primaryKey = 'user_service_id';
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
+
 $columns = array(
     array('db' => '`us`.`user_service_id`', 'dt' => 0, 'field' => 'user_service_id'),
     array('db' => '`us`.`_user_id`',  'dt' => 1, 'field' => '_user_id'),
     array('db' => '`s`.`service_name`',  'dt' => 2, 'field' => 'service_name'),
     array('db' => '`y`.`year_name`',   'dt' => 3, 'field' => 'year_name'),
-    array('db' => '`us`.`price`',     'dt' => 4, 'field' => 'price'),
-    array('db' => '`us`.`payment`',     'dt' => 5, 'field' => 'payment'),
-    array('db' => '`us`.`status`',     'dt' => 6, 'field' => 'status'),
+    array(
+        'db' => '`us`.`price`',     'dt' => 4, 'field' => 'price'
+    ),
+    array(
+        'db' => '`us`.`payment`', 'dt' => 5, 'field' => 'payment',
+        'formatter' => function ($d, $row) {
+            $d = str_replace("_", " ", $d);
+            return ucwords($d);
+        }
+    ),
+    array(
+        'db' => '`us`.`status`',     'dt' => 6, 'field' => 'status',
+        'formatter' => function ($d, $row) {
+            $d = str_replace("_", " ", $d);
+            return $d = ucwords($d);
+        }
+    ),
     array('db' => '`ud`.`first_name`',     'dt' => 7, 'field' => 'first_name'),
     array('db' => '`us`.`created_at`',     'dt' => 8, 'field' => 'created_at'),
     array('db' => '`us`.`modified_at`',     'dt' => 9, 'field' => 'modified_at'),
