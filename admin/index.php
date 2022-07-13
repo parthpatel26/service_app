@@ -126,7 +126,7 @@
 							<div class="box overflow-hidden bg-primary">
 								<div class="box-body p-0">
 									<div class="px-30 pt-20">
-										<h2 class="text-white mb-0">34,042 </h2>
+										<h2 class="text-white mb-0" id="customers_this_month"> </h2>
 										<p class="text-white-50">Customers this month</p>
 									</div>
 									<div id="customer_chart"></div>
@@ -177,8 +177,9 @@
 			height: 290,
 			type: 'area',
 			zoom: {
-				enabled: true
-			}
+				enabled: false,
+			},
+
 		},
 		colors: ['#ea9715'],
 		dataLabels: {
@@ -392,7 +393,7 @@
 					}
 					var chart2 = new ApexCharts(document.querySelector("#customer_chart"), customer_options);
 					chart2.render();
-					// $('#rev_stat_total').html(result.customer.total);
+					$('#customers_this_month').html(result.customers.total);
 
 				}
 
