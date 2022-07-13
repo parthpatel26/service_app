@@ -164,20 +164,20 @@
 
 </body>
 <script>
-	var categories = [];
-	var x_data = [];
+	var rev_categories = [];
+	var rev_x_data = [];
 
 	var rev_options = {
 		series: [{
 			name: "Profit",
-			data: x_data
+			data: rev_x_data
 		}],
 		chart: {
 			foreColor: "#333333",
 			height: 290,
 			type: 'area',
 			zoom: {
-				enabled: false
+				enabled: true
 			}
 		},
 		colors: ['#ea9715'],
@@ -235,7 +235,7 @@
 			}
 		},
 		xaxis: {
-			categories: categories,
+			categories: rev_categories,
 			labels: {
 				show: true,
 			},
@@ -260,10 +260,11 @@
 		},
 	};
 
+	var cus_x_data = [];
 	var customer_options = {
 		series: [{
 			name: 'Customers',
-			data: x_data
+			data: cus_x_data
 		}],
 		chart: {
 
@@ -361,8 +362,8 @@
 	}
 
 	function getCharts() {
-		categories.length = 0
-		x_data.length = 0
+		rev_categories.length = 0
+		rev_x_data.length = 0
 		$.ajax({
 			url: '../action/charts.php',
 			type: "POST",
@@ -374,27 +375,25 @@
 					$("#rev_stat").html('')
 					var chart_data = result.rev_stat.chart
 					for (var key in chart_data) {
-						categories.push(chart_data[key][0]);
-						x_data.push(chart_data[key][2]);
+						rev_categories.push(chart_data[key][0]);
+						rev_x_data.push(chart_data[key][2]);
 					}
-					var chart = new ApexCharts(document.querySelector("#rev_stat"), rev_options);
-					chart.render();
-					barchart('#rev_bar_chart', x_data)
+					var chart1 = new ApexCharts(document.querySelector("#rev_stat"), rev_options);
+					chart1.render();
+					barchart('#rev_bar_chart', rev_x_data)
 					$('#rev_stat_total').html('₹' + result.rev_stat.total);
-					categories.length = 0
-					x_data.length = 0
+
 				}
 				if (result.customers) {
 					$("#customer_chart").html('')
 					var chart_data = result.customers.chart
 					for (var key in chart_data) {
-						x_data.push(chart_data[key][1]);
+						cus_x_data.push(chart_data[key][1]);
 					}
-					var chart = new ApexCharts(document.querySelector("#customer_chart"), customer_options);
-					chart.render();
+					var chart2 = new ApexCharts(document.querySelector("#customer_chart"), customer_options);
+					chart2.render();
 					// $('#rev_stat_total').html(result.customer.total);
-					categories.length = 0
-					x_data.length = 0
+
 				}
 
 
@@ -412,16 +411,6 @@
 	$(document).ready(function() {
 		getCharts();
 
-		var timeOutFunctionId;
-
-		function responsive() {
-			getCharts();
-
-		}
-		window.addEventListener("resize", function() {
-			clearTimeout(timeOutFunctionId);
-			timeOutFunctionId = setTimeout(responsive, 500);
-		});
 
 		$('.chart_period[role="tablist"] a').on('click', function() {
 			var ul = $(this).closest('ul').find('a').removeClass('active')
