@@ -21,7 +21,7 @@
 									<div class="d-flex align-items-center justify-content-between">
 										<div>
 											<h5 class="mb-0">Revenue</h5>
-											<h2 class="mb-0 text-danger">$25054</h2>
+											<h2 class="mb-0 text-danger" id="revenue"></h2>
 										</div>
 										<img src="../images/icon-1.png" alt="">
 									</div>
@@ -33,8 +33,8 @@
 								<div class="box-body">
 									<div class="d-flex align-items-center justify-content-between">
 										<div>
-											<h5 class="mb-0">Refund</h5>
-											<h2 class="mb-0 text-primary">$1874</h2>
+											<h5 class="mb-0">Incoming</h5>
+											<h2 class="mb-0 text-primary" id="incoming"></h2>
 										</div>
 										<img src="../images/icon-2.png" alt="">
 									</div>
@@ -47,7 +47,7 @@
 									<div class="d-flex align-items-center justify-content-between">
 										<div>
 											<h5 class="mb-0">Current Sales</h5>
-											<h2 class="mb-0 text-success">287</h2>
+											<h2 class="mb-0 text-success" id="current_sales"></h2>
 										</div>
 										<img src="../images/icon-3.png" alt="">
 									</div>
@@ -59,10 +59,21 @@
 								<div class="box-body">
 									<div class="d-flex align-items-center justify-content-between">
 										<div>
-											<h5 class="mb-0">Recurring Sales</h5>
-											<h2 class="mb-0 text-warning">$2284</h2>
+											<h5 class="mb-0">Completed</h5>
+											<h2 class="mb-0 text-warning" id="completed"></h2>
 										</div>
-										<div class="bar" data-peity='{ "fill": ["#5949d6", "#9fb3ca", "#007eff", "#2a8853", "#ea9715", "#fb3d4e", "#bcc2c8", "#205081"], "height": 61, "width": 100, "padding":0.4 }'>10,15,8,20,18,11,7,18</div>
+										<div class="bar" data-peity="{ &quot;fill&quot;: [&quot;#5949d6&quot;, &quot;#9fb3ca&quot;, &quot;#007eff&quot;, &quot;#2a8853&quot;, &quot;#ea9715&quot;, &quot;#fb3d4e&quot;, &quot;#bcc2c8&quot;, &quot;#205081&quot;], &quot;height&quot;: 61, &quot;width&quot;: 100, &quot;padding&quot;:0.4 }" style="display: none;">
+											10,15,8,20,18,11,7,18
+										</div><svg class="peity" height="61" width="100">
+											<rect fill="#5949d6" x="5" y="30.5" width="2.5" height="30.5"></rect>
+											<rect fill="#9fb3ca" x="17.5" y="15.25" width="2.5" height="45.75"></rect>
+											<rect fill="#007eff" x="30" y="36.599999999999994" width="2.5" height="24.400000000000006"></rect>
+											<rect fill="#2a8853" x="42.5" y="0" width="2.5" height="61"></rect>
+											<rect fill="#ea9715" x="55.00000000000001" y="6.100000000000001" width="2.499999999999986" height="54.9"></rect>
+											<rect fill="#fb3d4e" x="67.5" y="27.449999999999996" width="2.5" height="33.550000000000004"></rect>
+											<rect fill="#bcc2c8" x="80" y="39.650000000000006" width="2.5" height="21.349999999999994"></rect>
+											<rect fill="#205081" x="92.5" y="6.100000000000001" width="2.5" height="54.9"></rect>
+										</svg>
 									</div>
 								</div>
 							</div>
@@ -73,20 +84,20 @@
 									<h4 class="box-title">Revenue Statistics
 									</h4>
 									<div class="box-controls pull-right">
-										<ul class="nav nav-pills nav-pills-sm" role="tablist">
+										<ul class="nav nav-pills nav-pills-sm chart_period" role="tablist" chart="rev_stat">
 											<li class="nav-item">
-												<a class="nav-link py-2 px-4 b-0" data-toggle="tab" href="#">
+												<a class="nav-link py-2 px-4 b-0" data-toggle="tab" href="#" name='year'>
+													<span class="nav-text base-font">Year</span>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link py-2 px-4 b-0" data-toggle="tab" href="#" name='month'>
 													<span class="nav-text base-font">Month</span>
 												</a>
 											</li>
 											<li class="nav-item">
-												<a class="nav-link py-2 px-4 b-0" data-toggle="tab" href="#">
+												<a class="nav-link py-2 px-4 b-0 active" data-toggle="tab" href="#" name='week'>
 													<span class="nav-text base-font">Week</span>
-												</a>
-											</li>
-											<li class="nav-item">
-												<a class="nav-link py-2 px-4 b-0 active" data-toggle="tab" href="#">
-													<span class="nav-text base-font">Day</span>
 												</a>
 											</li>
 										</ul>
@@ -94,21 +105,17 @@
 								</div>
 								<div class="box-body">
 									<div class="row">
-										<div class="col-lg-9 col-12">
-											<div id="charts_widget_2_chart"></div>
+										<div class="col-lg-9 col-12" style="position: relative;">
+											<div id="rev_stat" style="min-height: 290px;"></div>
 										</div>
 										<div class="col-lg-3 col-12">
 											<div class="p-20">
 												<div class="mb-40">
-													<h2 class="mb-0 text-primary fw-500">$125952</h2>
+													<h2 class="mb-0 text-primary fw-500" id="rev_stat_total"></h2>
 													<p class="mb-0">Income</p>
-													<div id="barchart1"></div>
+													<div id="rev_bar_chart"></div>
 												</div>
-												<div>
-													<h2 class="mb-0 text-info fw-500">$42.6%</h2>
-													<p class="mb-0">Income</p>
-													<div id="barchart2"></div>
-												</div>
+
 											</div>
 										</div>
 									</div>
@@ -122,200 +129,11 @@
 										<h2 class="text-white mb-0">34,042 </h2>
 										<p class="text-white-50">Customers this month</p>
 									</div>
-									<div id="statisticschart3"></div>
+									<div id="customer_chart"></div>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-12">
-							<div class="box overflow-hidden">
-								<div class="box-body p-0">
-									<div class="p-15">
-										<h3 class="fw-500 text-primary mb-0">$1560.75</h3>
-										<h6 class="mb-0">Saving Progress</h6>
-									</div>
-									<div id="statisticschart4"></div>
-									<div class="wed-up">
-										<div class="d-flex justify-content-between align-items-center">
-											<div class="d-flex align-items-center">
-												<i class="fa fa-arrow-up text-primary fs-30 me-10"></i>
-												<div>
-													<h3 class="fw-500 text-primary mb-0">$146.45</h3>
-													<h6 class="mb-0">Income</h6>
-												</div>
-											</div>
-											<div class="d-flex align-items-center">
-												<i class="fa fa-arrow-down text-danger fs-30 me-10"></i>
-												<div>
-													<h3 class="fw-500 text-primary mb-0">$153.24</h3>
-													<h6 class="mb-0">Expenses</h6>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-12">
-							<div class="box">
-								<div class="box-header">
-									<h4 class="box-title">Server Status</h4>
-								</div>
-								<div class="box-body">
-									<div style="min-height: 235px;">
-										<div id="shops-trend"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class=" col-xl-6 col-12">
-							<div class="box bg-transparent no-shadow mb-10">
-								<div class="box-header no-border pb-0 pt-10">
-									<h4 class="box-title">Top Selling Products</h4>
-								</div>
-							</div>
-							<div class="box">
-								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table no-border mb-0">
-											<tbody>
-												<tr>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">01</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">Pocket Drone 2.5G</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">20 Nov 2019 at 06:00 PM</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$150.00</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">16 Qty</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$2800.00</h6>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">02</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">DJI Phantom Pro</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">29 Nov 2019 at 09:00 PM</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$175.00</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">20 Qty</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$3250.00</h6>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">03</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">Allen Rozario</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">06 Dec 2019 at 04:00 AM</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$210.00</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">22 Qty</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$1860.00</h6>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">04</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">Pocket Drone 2.5G</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">18 Dec 2019 at 06:20 PM</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$220.00</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">24 Qty</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$3100.00</h6>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">05</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">Melisa Rozario</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">28 Dec 2019 at 07:45 PM</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$210.00</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">23 Qty</h6>
-													</td>
-													<td>
-														<h6 class="mb-0 fw-500 text-mute text-nowrap">$2460.00</h6>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-md-6 col-12">
-							<div class="box overflow-hidden">
-								<div class="box-body pb-0">
-									<div class="icon bg-primary-light rounded-circle w-60 h-60">
-										<i class="text-primary me-0 fs-20 fa fa-users"></i>
-									</div>
-									<div>
-										<h2 class="text-dark mb-0 fw-500">18.8k</h2>
-										<p class="text-mute mb-0 fs-20">Total users</p>
-									</div>
-								</div>
-								<div class="box-body p-0">
-									<div id="revenue1"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-md-6 col-12">
-							<div class="box overflow-hidden">
-								<div class="box-body pb-0">
-									<div class="icon bg-warning-light rounded-circle w-60 h-60">
-										<i class="text-warning me-0 fs-20 fa fa-bullseye"></i>
-									</div>
-									<div>
-										<h2 class="text-dark mb-0 fw-500">35.8k</h2>
-										<p class="text-mute mb-0 fs-20">Average reach per post</p>
-									</div>
-								</div>
-								<div class="box-body p-0">
-									<div id="revenue2"></div>
-								</div>
-							</div>
-						</div>
+
 					</div>
 				</section>
 				<!-- /.content -->
@@ -346,13 +164,13 @@
 
 </body>
 <script>
-	var categories = []
-	var rev = []
+	var categories = [];
+	var x_data = [];
 
-	var options = {
+	var rev_options = {
 		series: [{
 			name: "Profit",
-			data: rev
+			data: x_data
 		}],
 		chart: {
 			foreColor: "#333333",
@@ -433,34 +251,187 @@
 		},
 		yaxis: {
 			labels: {
-				show: false,
+				show: true,
 				formatter: function(val) {
-					return val + "K";
+					return val + '₹';
 				}
 			}
 
 		},
 	};
-	$(document).ready(function() {
+
+	var customer_options = {
+		series: [{
+			name: 'Customers',
+			data: x_data
+		}],
+		chart: {
+
+			foreColor: '#ffffff',
+			height: 295,
+			width: "100%",
+			type: 'line',
+			offsetY: 0,
+			offsetX: 0,
+			zoom: {
+				enabled: false
+			},
+		},
+		colors: ['#ffffff'],
+		dataLabels: {
+			enabled: false
+		},
+		tooltip: {
+			theme: 'dark'
+		},
+		stroke: {
+			curve: 'smooth',
+		},
+
+		markers: {
+			size: 0,
+		},
+		yaxis: {
+			axisBorder: {
+				show: true
+			},
+			axisTicks: {
+				show: false,
+			},
+			labels: {
+				show: true,
+				formatter: function(val) {
+					return parseInt(val);
+				}
+			}
+
+		},
+		xaxis: {
+			axisBorder: {
+				show: true
+			},
+			axisTicks: {
+				show: false,
+			},
+			labels: {
+				show: true,
+				formatter: function(val) {
+					return parseInt(val);
+				}
+			}
+
+		},
+		grid: {
+			show: true,
+			borderColor: '#5578ed',
+			strokeDashArray: 0,
+			position: 'back',
+			xaxis: {
+				lines: {
+					show: false,
+				}
+			},
+			yaxis: {
+				lines: {
+					show: false
+				}
+			},
+			row: {
+				colors: undefined,
+				opacity: 0.5,
+			},
+			column: {
+				colors: undefined,
+				opacity: 0.1
+			},
+		}
+	};
+
+
+
+	function barchart(id, option) {
+		$(id).sparkline(option, {
+			type: 'bar',
+			height: '38',
+			width: '100%',
+			barWidth: 6,
+			barSpacing: 4,
+			barColor: '#ea9715',
+		});
+	}
+
+	function getCharts() {
+		categories.length = 0
+		x_data.length = 0
 		$.ajax({
 			url: '../action/charts.php',
 			type: "POST",
-			data: {
-				action: 'count_user'
-			},
+			data: ajax_data,
 			success: function(data) {
 				const result = JSON.parse(data);
-				for (var key in result) {
-					categories.push(result[key][1]);
-					rev.push(result[key][2]);
+				console.log(result);
+				if (result.rev_stat) {
+					$("#rev_stat").html('')
+					var chart_data = result.rev_stat.chart
+					for (var key in chart_data) {
+						categories.push(chart_data[key][0]);
+						x_data.push(chart_data[key][2]);
+					}
+					var chart = new ApexCharts(document.querySelector("#rev_stat"), rev_options);
+					chart.render();
+					barchart('#rev_bar_chart', x_data)
+					$('#rev_stat_total').html('₹' + result.rev_stat.total);
+					categories.length = 0
+					x_data.length = 0
 				}
-				var chart = new ApexCharts(document.querySelector("#charts_widget_2_chart"), options);
-				console.log(options.xaxis.categories);
-				chart.render();
+				if (result.customers) {
+					$("#customer_chart").html('')
+					var chart_data = result.customers.chart
+					for (var key in chart_data) {
+						x_data.push(chart_data[key][1]);
+					}
+					var chart = new ApexCharts(document.querySelector("#customer_chart"), customer_options);
+					chart.render();
+					// $('#rev_stat_total').html(result.customer.total);
+					categories.length = 0
+					x_data.length = 0
+				}
 
+
+				if (result.stats) {
+					$('#revenue').html(result.stats.revenue);
+					$('#incoming').html(result.stats.incoming);
+					$('#current_sales').html(result.stats.sales);
+					$('#completed').html(result.stats.completed);
+				}
 			},
-
 		});
+	}
+	var ajax_data = {}
+	console.log(ajax_data);
+	$(document).ready(function() {
+		getCharts();
+
+		var timeOutFunctionId;
+
+		function responsive() {
+			getCharts();
+
+		}
+		window.addEventListener("resize", function() {
+			clearTimeout(timeOutFunctionId);
+			timeOutFunctionId = setTimeout(responsive, 500);
+		});
+
+		$('.chart_period[role="tablist"] a').on('click', function() {
+			var ul = $(this).closest('ul').find('a').removeClass('active')
+			$(this).addClass('active');
+			var chart_name = $(this).closest('ul').attr('chart')
+			var period = $(this).attr('name')
+			ajax_data['chart'] = chart_name
+			ajax_data['period'] = period
+			getCharts();
+		})
 
 	})
 </script>

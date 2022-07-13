@@ -14,16 +14,16 @@ $user_id = '';
 $role = '';
 
 if ($role_name === 'admin') {
-    $email = 'igerlach@example.net';
-    $password = '2c5c7b112348b23dc7fe919ccbe1a41fdd7fd7fe';
+    $email = 'frederic80@example.net';
+    $password = '854a453dc9755f3ab817fc197aa6bbc6a970f82d';
 }
 if ($role_name === 'client') {
-    $email = 'sondricka@example.net';
-    $password = '56540f1a29f459069acbd751bf8045e68b491bbf';
+    $email = 'pmaggio@example.net';
+    $password = '022b60db291c87e2895f00bae594790dcce8f674';
 }
 if ($role_name === 'customer') {
-    $email = 'lcrona@example.com';
-    $password = '8793146f0c47dd017677b74342ff6b04';
+    $email = 'ckiehn@example.net';
+    $password = 'adbb86f0cb2b0466e43634a13fd273ec16c7eb85';
 }
 
 
