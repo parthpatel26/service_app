@@ -1186,13 +1186,6 @@ $('.demo-panel-bx').slimScroll({
 }(jQuery) // End of use strict
 
 
-// feather icon
-	$(function () {
-		'use strict'			
-		feather.replace();		
-	}); // End of use strict
-
-
 
 
 /*!

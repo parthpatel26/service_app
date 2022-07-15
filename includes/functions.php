@@ -99,7 +99,12 @@ function actKey($getStr)
   $actKey = sha1(mt_rand(10000, 99999) . time() . $getStr);
   return $actKey;
 }
-
+function getFileName($getStr)
+{
+  $actKey = (mt_rand(10000, 99999) . TIME . $getStr);
+  $string = str_replace(array(" ", "/"), array("", ""), $actKey);
+  return $string;
+}
 function randomProId($getStr)
 {
   $actKey = sha1(mt_rand(100000, 999999) . $getStr);

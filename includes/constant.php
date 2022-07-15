@@ -9,3 +9,4 @@ $time = date("Y-m-d-H:i:s");
 define('ROOT_DOCUMENTS', $documents);
 define('ROOT_PROFILE_PIC', $profile_pic);
 define('TIME', $time);
+$sitename = 'localhost';

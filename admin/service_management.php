@@ -46,6 +46,7 @@
                                             <thead>
 
                                                 <tr>
+                                                    <th>Action</th>
                                                     <th>Service_ID</th>
                                                     <th>User_ID</th>
                                                     <th>Service</th>
@@ -174,23 +175,30 @@
     <script src="<?php echo ROOT ?>assets/vendor_components/sweetalert/sweetalert.min.js"></script>
     <script src="<?php echo ROOT ?>assets/vendor_components/datatable/dataTables.cellEdit.js"></script>
 
+    <script src="<?php echo ROOT ?>assets/vendor_components/PACE/pace.min.js"></script>
 
     <!-- Florence Admin App -->
     <script src="<?php echo ROOT ?>js/jquery.smartmenus.js"></script>
     <script src="<?php echo ROOT ?>js/menus.js"></script>
     <script src="<?php echo ROOT ?>js/template.js"></script>
+    <script src="<?php echo ROOT ?>js/pages/pace.js"></script>
+
 
 </body>
 
 
 <script>
+    $(document).ajaxStart(function() {
+        Pace.restart();
+    });
+
     var table = null;
     var filter = {};
 
     var cellOption = {
         onUpdate: myCallbackFunction,
         inputCss: 'my-input-class',
-        columns: [2, 5, 6, 7],
+        columns: [3, 6, 7, 8],
         allowNulls: {
             columns: [1],
             errorClass: 'error'
@@ -211,6 +219,29 @@
         buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
         lengthMenu: [10, 25, 50, 100, -1],
         columns: [{
+                targets: 0,
+                data: '0',
+                render: function(data, type, row, meta) {
+                    if (row[10] != '') {
+                        console.log(row[10]);
+                        var invoice = "http://<?= $sitename ?>/services_app/invoices/" + row[10] + '.pdf'
+                        var target = '_blank'
+                    } else {
+                        invoice = 'javascript:void(0)'
+                        target = ''
+                    }
+                    return '<div class="list-icons d-inline-flex ">' +
+                        '<a href="' + invoice + '" data-id=' + data + ' class=" view-invoice list-icons-item me-10" target="' + target + '"><i class="fa fa-eye"></i></a><div class="list-icons-item dropdown">' +
+                        '<a href="#" class="list-icons-item dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-file-text"></i></a>' +
+                        '<div class="dropdown-menu dropdown-menu-end">' +
+                        '<a href="#" data-id=' + data + ' id="wa_invoice" class="dropdown-item send-invoice">Send invoice via WhatsApp</a>' +
+                        '<a href="#" data-id=' + data + ' id="email_invoice" class="dropdown-item send-invoice">Send invoice via Email</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
+
+                }
+            }, {
                 data: '0'
             },
             {
@@ -259,20 +290,20 @@
                         $(api.column(colIdx).header()).index()
                     );
                     var title = $(cell).text();
-                    if (colIdx == 2) {
+                    if (colIdx == 3) {
                         $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + service + '</select>');
-                    } else if (colIdx == 3) {
+                    } else if (colIdx == 4) {
                         $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + year + '</select>');
-                    } else if (colIdx == 7) {
+                    } else if (colIdx == 8) {
                         $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + client + '</select>');
-                    } else if (colIdx == 5) {
+                    } else if (colIdx == 6) {
                         var regexr = '{search}';
                         $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + payment + '</select>');
-                    } else if (colIdx == 6) {
+                    } else if (colIdx == 7) {
                         $(cell).html('<select class="btn dropdown-toggle btn-default text-start"> ' + status + '</select>');
-                    } else if (colIdx == 8) {
-                        $(cell).html('<input class="form-control" type="date" placeholder=' + title + '>');
                     } else if (colIdx == 9) {
+                        $(cell).html('<input class="form-control" type="date" placeholder=' + title + '>');
+                    } else if (colIdx == 10) {
                         $(cell).html('<input class="form-control" type="date" placeholder=' + title + '>');
                     } else {
                         $(cell).html('<input class="form-control" type="search" placeholder=' + title + '>');
@@ -333,16 +364,16 @@
 
             },
         }
-        if (column == 2) {
+        if (column == 3) {
             update_options['data']['column'] = '_service_id'
         }
-        if (column == 5) {
+        if (column == 6) {
             update_options['data']['column'] = 'payment'
         }
-        if (column == 6) {
+        if (column == 7) {
             update_options['data']['column'] = 'status'
         }
-        if (column == 7) {
+        if (column == 8) {
             update_options['data']['column'] = '_assigned_to'
         }
         $.ajax(update_options)
@@ -382,7 +413,7 @@
                 options: []
             })
             const lastIndex = cellOption.inputTypes.length;
-            if (column == 5 || column == 6) {
+            if (column == 6 || column == 7) {
                 cellOption.inputTypes[lastIndex - 1].options.push({
                     'value': filter,
                     'display': capitalizeFirstLetter(filter)
@@ -395,7 +426,7 @@
             }
 
         } else {
-            if (column == 5 || column == 6) {
+            if (column == 6 || column == 7) {
                 cellOption.inputTypes[found].options.push({
                     'value': filter,
                     'display': capitalizeFirstLetter(filter)
@@ -445,7 +476,7 @@
 
                 var service_filter = result['service'];
                 for (var key in service_filter) {
-                    updateCellOptions(2, 'list', service_filter[key])
+                    updateCellOptions(3, 'list', service_filter[key])
                     service += '<option  data-id=' + service_filter[key]['id'] + ' value=' + service_filter[key]['name'] + '>' + service_filter[key]['name'] + '</option>'
                 }
 
@@ -456,19 +487,19 @@
 
                 var client_filter = result['assigned_to'];
                 for (var key in client_filter) {
-                    updateCellOptions(7, 'list', client_filter[key])
+                    updateCellOptions(8, 'list', client_filter[key])
 
                     client += '<option  data-id=' + client_filter[key]['id'] + ' value=' + client_filter[key]['name'] + '>' + client_filter[key]['name'] + '</option>'
                 }
                 var status_filter = result['status'];
                 for (var key in status_filter) {
-                    updateCellOptions(6, 'list', status_filter[key])
+                    updateCellOptions(7, 'list', status_filter[key])
 
                     status += '<option value=' + status_filter[key] + '>' + capitalizeFirstLetter(status_filter[key]) + '</option>'
                 }
                 var payment_filter = result['payment'];
                 for (var key in payment_filter) {
-                    updateCellOptions(5, 'list', payment_filter[key])
+                    updateCellOptions(6, 'list', payment_filter[key])
 
                     payment += '<option value=' + payment_filter[key] + '>' + capitalizeFirstLetter(payment_filter[key]) + '</option>'
                 }
@@ -478,6 +509,25 @@
             },
         })
         $('#user_service thead tr').clone(true).addClass('filters').insertBefore('#user_service thead tr')
+
+        $('body').on('click', '.send-invoice, .view-invoice', function() {
+            var options = {
+                action: 'invoice'
+            }
+            options.id = $(this).data('id')
+            console.log(options);
+            $.ajax({
+                url: '../action/invoice.php',
+                type: "POST",
+                data: options,
+                success: function(data) {
+                    console.log(data);
+                    $(this).attr('href', data);
+                    $(this).attr('href');
+                    $(this).attr('target', '_blank');
+                }
+            })
+        })
 
     })
 </script>

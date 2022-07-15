@@ -21,13 +21,54 @@ WHERE TABLE_NAME = '$table' AND COLUMN_NAME = '$column_name'";
 $enum  = get_enum('status', $table, $connect);
 
 if (isset($_REQUEST['action'])) {
+    if (($_REQUEST['action'] == 'update_service')) {
+        $name = $_REQUEST['table'];
+        $id = $_REQUEST['id'];
+        $value = $_REQUEST['value'];
+        $column = 'status';
+
+        switch ($value) {
+            case "false":
+                $status = 2;
+                break;
+            case "true":
+                $status = 1;
+                break;
+        }
+
+        switch ($name) {
+            case "year":
+                $table = 'financial_year_master';
+                $id_column = 'year_id';
+                break;
+            case "service":
+                $table = 'services_master';
+                $id_column = 'service_id';
+                break;
+        }
+
+
+        $sql  = "UPDATE  $table
+        SET $column = $status, modified_at = '$time'
+        WHERE $id_column = $id";
+
+        $result = mysqli_query($connect, $sql);
+
+        if ($result) {
+            echo '1';
+        } else {
+            echo ("Error description: " . mysqli_error($connect));
+        }
+        exit;
+    }
+
     if (($_REQUEST['action'] == 'update')) {
         $service_id = $_REQUEST['service_id'];
         $value = $_REQUEST['value'];
         $column = $_REQUEST['column'];
 
         $sql  = "UPDATE  $table
-        SET $column = '$value'
+        SET $column = '$value', modified_at = '$time'
         WHERE user_service_id = $service_id";
 
         $result = mysqli_query($connect, $sql);
@@ -40,7 +81,7 @@ if (isset($_REQUEST['action'])) {
         print_r($column);
         exit;
     }
-    if (($_REQUEST['action'] == 'service_filters')) {
+    if (($_REQUEST['action'] == 'service_filters') || ($_REQUEST['action'] == 'load_services')) {
         $filters = array();
         $service = array();
         $year = array();
@@ -66,6 +107,12 @@ if (isset($_REQUEST['action'])) {
                 "name" => $row['year_name'],
                 "status" => $row['status'],
             );
+        }
+        if (($_REQUEST['action'] == 'load_services')) {
+            $filters['service'] = $service;
+            $filters['year'] = $year;
+            print_r(json_encode($filters));
+            exit;
         }
 
         $sql = "SELECT * FROM user_master AS um JOIN user_details AS ud ON (um.user_id = ud._user_id) WHERE um.is_deleted = '0' AND um.role = '2' ";
@@ -123,6 +170,7 @@ $columns = array(
     array('db' => '`ud`.`first_name`',     'dt' => 7, 'field' => 'first_name'),
     array('db' => '`us`.`created_at`',     'dt' => 8, 'field' => 'created_at'),
     array('db' => '`us`.`modified_at`',     'dt' => 9, 'field' => 'modified_at'),
+    array('db' => '`us`.`invoice_file`',     'dt' => 10, 'field' => 'invoice_file'),
 );
 
 // SQL server connection information
