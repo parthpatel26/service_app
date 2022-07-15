@@ -6,8 +6,8 @@
 function redirectTo($location = NULL)
 {
   if ($location != NULL) {
-    //  header("location:{$location}");
-    echo "<script>location.href='$location';</script>";
+    header("location:{$location}");
+    // echo "<script>location.href='$location';</script>";
     exit;
   }
 }

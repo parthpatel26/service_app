@@ -1,6 +1,7 @@
-<?php include 'templates/header.php' ?>
+<?php include 'includes/header.php';
+?>
 
-<body class="hold-transition theme-primary bg-img" style="background-image: url(../images/auth-bg/bg-2.jpg)">
+<body class="hold-transition theme-primary bg-img" style="background-image: url(images/auth-bg/bg-2.jpg)">
 
 	<div class="container h-p100">
 		<div class="row align-items-center justify-content-md-center h-p100">
@@ -77,7 +78,7 @@
 	<!-- Vendor JS -->
 	<script src="js/vendors.min.js"></script>
 	<script src="js/pages/chat-popup.js"></script>
-	<script src="../assets/icons/feather-icons/feather.min.js"></script>
+	<script src="assets/icons/feather-icons/feather.min.js"></script>
 
 
 </body>

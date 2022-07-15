@@ -1,7 +1,11 @@
 <?php
-session_start();
-session_destroy();
 include 'includes/constant.php';
-if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
+include 'includes/config.php';
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     redirectTo('login.php');
+}
+if ($_SESSION['role'] == 3) {
+    redirectTo('customer/index.php');
+} else {
+    redirectTo('admin/index.php');
 }

@@ -1,13 +1,13 @@
-﻿<?php include '../templates/header.php';
+﻿<?php include '../includes/header.php';
 ?>
 
 <body class="layout-top-nav light-skin theme-primary fixed">
 
 	<div class="wrapper">
-		<div id="loader"></div>
 
 
 		<?php include '../templates/admin-header.php' ?>
+		<div id="loader"></div>
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">

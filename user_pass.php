@@ -1,4 +1,4 @@
-<?php include 'templates/header.php' ?>
+<?php include 'includes/header.php' ?>
 
 <body class="hold-transition theme-primary bg-img" style="background-image: url(../images/auth-bg/bg-2.jpg)">
 

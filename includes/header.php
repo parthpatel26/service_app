@@ -1,11 +1,12 @@
 <?php
-session_start();
+
 $times = substr_count($_SERVER['PHP_SELF'], "/");
 if ($times <= 2) {
     include('includes/constant.php');
 } else {
     include('../includes/constant.php');
 }
+include(ROOT . 'includes/config.php');
 ?>
 
 <!DOCTYPE html>

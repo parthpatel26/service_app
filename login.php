@@ -1,4 +1,4 @@
-<?php include 'templates/header.php' ?>
+<?php include 'includes/header.php' ?>
 
 <body class="hold-transition theme-primary bg-img" style="background-image: url(images/auth-bg/bg-1.jpg)">
 
@@ -70,7 +70,7 @@
 									</div>
 								</form>
 								<div class="text-center">
-									<p class="mt-15 mb-0">Don't have an account? <a href="auth_registerphp" class="text-warning ms-5">Sign Up</a></p>
+									<p class="mt-15 mb-0">Don't have an account? <a href="register.php" class="text-warning ms-5">Sign Up</a></p>
 								</div>
 							</div>
 						</div>
@@ -111,13 +111,13 @@
 					console.log(result);
 					if (result.error === 0) {
 						if (result.role == 1) {
-							window.location.replace('/services_app/admin/index.php');
+							window.location.replace(<?php echo ROOT ?> 'admin/index.php');
 						}
 						if (result.role == 2) {
-							window.location.replace('/services_app/admin/index.php');
+							window.location.replace(<?php echo ROOT ?> 'admin/index.php');
 						}
 						if (result.role == 3) {
-							window.location.replace('/services_app/index.php');
+							window.location.replace(<?php echo ROOT ?> 'index.php');
 						}
 					} else {
 						$('#error-div').html(result.msg);

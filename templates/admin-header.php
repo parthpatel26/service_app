@@ -1,3 +1,18 @@
+<?php
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
+    redirectTo('login.php');
+    exit;
+}
+if ($_SESSION['role'] == 3) {
+    redirectTo('customer');
+    exit;
+}
+if (isset($_GET['logout'])) {
+    if ($_GET['logout'] == 1) {
+        logout();
+    }
+}
+?>
 <header class="main-header">
     <div class="inside-header">
         <div class="d-flex align-items-center logo-box justify-content-start">
@@ -136,7 +151,7 @@
                                 <a class="dropdown-item" href="#"><i class="ti-wallet text-muted me-2"></i> My Wallet</a>
                                 <a class="dropdown-item" href="#"><i class="ti-settings text-muted me-2"></i> Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i class="ti-lock text-muted me-2"></i> Logout</a>
+                                <a class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF'], '?logout=1' ?>"><i class="ti-lock text-muted me-2"></i> Logout</a>
                             </li>
                         </ul>
                     </li>
